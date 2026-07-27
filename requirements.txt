@@ -1,0 +1,2 @@
+# Default contributor environment: runtime plus test and lint tools.
+-r requirements-dev.txt

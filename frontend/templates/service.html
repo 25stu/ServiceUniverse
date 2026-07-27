@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.name }} — ServiceUniverse{% endblock %}
+
+{% block content %}
+  <section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ service.name }}</span>
+    </nav>
+    <div class="service-title-grid">
+      <div>
+        <p class="eyebrow">{{ provider.code }} / Service workspace</p>
+        <h1>{{ service.name }}</h1>
+      </div>
+      <div class="service-readiness">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div>
+          <p data-service-status>Scaffold ready</p>
+          <small>Owner: Member {{ service.owner }}</small>
+        </div>
+      </div>
+    </div>
+    <p class="service-lede">{{ service.summary }}</p>
+  </section>
+
+  <section class="integration-panel">
+    <div class="integration-intro">
+      <p class="eyebrow">Integration workspace</p>
+      <h2>This route is ready for the service owner.</h2>
+      <p>
+        Replace this starter content with the real citizen workflow. Keep the shared
+        layout and connect browser requests through the Gateway.
+      </p>
+    </div>
+    <ol class="handoff-steps">
+      <li>
+        <span>01</span>
+        <div>
+          <h3>Freeze the contract</h3>
+          <p>Define endpoints, schemas, states, and errors under <code>contracts/</code>.</p>
+        </div>
+      </li>
+      <li>
+        <span>02</span>
+        <div>
+          <h3>Build the service</h3>
+          <p>Implement business logic in <code>services/{{ service.slug | replace("-", "_") }}/</code>.</p>
+        </div>
+      </li>
+      <li>
+        <span>03</span>
+        <div>
+          <h3>Connect and verify</h3>
+          <p>Add the Gateway route, replace this view, and run unit plus integration tests.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <aside class="developer-note">
+    <p>Developer endpoint</p>
+    <code>http://localhost:{{ service.port }}/api/v1/service-info</code>
+    <a href="/providers/{{ provider.slug }}">Back to {{ provider.short_name }}</a>
+  </aside>
+{% endblock %}

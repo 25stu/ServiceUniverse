@@ -1,0 +1,142 @@
+x-app: &app
+  build:
+    context: .
+  init: true
+
+x-healthcheck: &healthcheck
+  interval: 5s
+  timeout: 3s
+  retries: 12
+  start_period: 5s
+
+services:
+  frontend:
+    <<: *app
+    command: uvicorn frontend.app.main:app --host 0.0.0.0 --port 8000
+    environment:
+      GATEWAY_PUBLIC_URL: http://localhost:8080
+    ports:
+      - "8000:8000"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+
+  gateway:
+    <<: *app
+    command: uvicorn gateway.app.main:app --host 0.0.0.0 --port 8080
+    environment:
+      WATER_SERVICE_URL: http://water-billing:8101
+      GAS_SERVICE_URL: http://gas-fault:8102
+      ATTRACTION_SERVICE_URL: http://attraction-reservation:8201
+      LIBRARY_SERVICE_URL: http://library-account:8202
+      PARKING_AVAILABILITY_SERVICE_URL: http://parking-availability:8301
+      PARKING_BILLING_SERVICE_URL: http://parking-billing:8302
+      FRONTEND_ORIGINS: http://localhost:8000
+      DOWNSTREAM_TIMEOUT_SECONDS: 5
+    ports:
+      - "8080:8080"
+    depends_on:
+      water-billing:
+        condition: service_healthy
+      gas-fault:
+        condition: service_healthy
+      attraction-reservation:
+        condition: service_healthy
+      library-account:
+        condition: service_healthy
+      parking-availability:
+        condition: service_healthy
+      parking-billing:
+        condition: service_healthy
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"
+
+  water-billing:
+    <<: *app
+    command: uvicorn services.water_billing.app.main:app --host 0.0.0.0 --port 8101
+    ports:
+      - "8101:8101"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8101/health')"
+
+  gas-fault:
+    <<: *app
+    command: uvicorn services.gas_fault.app.main:app --host 0.0.0.0 --port 8102
+    ports:
+      - "8102:8102"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8102/health')"
+
+  attraction-reservation:
+    <<: *app
+    command: uvicorn services.attraction_reservation.app.main:app --host 0.0.0.0 --port 8201
+    ports:
+      - "8201:8201"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8201/health')"
+
+  library-account:
+    <<: *app
+    command: uvicorn services.library_account.app.main:app --host 0.0.0.0 --port 8202
+    ports:
+      - "8202:8202"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8202/health')"
+
+  parking-availability:
+    <<: *app
+    command: uvicorn services.parking_availability.app.main:app --host 0.0.0.0 --port 8301
+    ports:
+      - "8301:8301"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8301/health')"
+
+  parking-billing:
+    <<: *app
+    command: uvicorn services.parking_billing.app.main:app --host 0.0.0.0 --port 8302
+    ports:
+      - "8302:8302"
+    healthcheck:
+      <<: *healthcheck
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8302/health')"

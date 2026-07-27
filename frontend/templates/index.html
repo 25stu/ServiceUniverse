@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}ServiceUniverse — Everyday city services{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Your city, in one place</p>
+      <h1>Everyday services.<br><em>One clear path.</em></h1>
+      <p class="hero-intro">
+        Pay a bill, report a fault, plan a day out, use the library,
+        or find a place to park—without learning a different system each time.
+      </p>
+      <a class="primary-link" href="#providers">
+        Explore city providers
+        <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+    <div class="city-index" aria-label="Available service areas">
+      <div class="city-line" aria-hidden="true"></div>
+      {% for provider in catalog.providers %}
+        <a class="index-stop index-stop-{{ loop.index }}" href="/providers/{{ provider.slug }}">
+          <span class="index-code">{{ "%02d" | format(loop.index) }}</span>
+          <span>{{ provider.short_name }}</span>
+        </a>
+      {% endfor %}
+      <p class="index-caption">Three providers, connected through one platform.</p>
+    </div>
+  </section>
+
+  <section class="providers" id="providers" aria-labelledby="providers-heading">
+    <header class="section-heading">
+      <p class="eyebrow">Service directory</p>
+      <h2 id="providers-heading">Choose a provider</h2>
+      <p>Each provider offers two focused services through the shared ServiceUniverse experience.</p>
+    </header>
+
+    <div class="provider-list">
+      {% for provider in catalog.providers %}
+        <article class="provider-row provider-{{ provider.accent }}">
+          <div class="provider-number" aria-hidden="true">{{ "%02d" | format(loop.index) }}</div>
+          <div class="provider-summary">
+            <p class="provider-code">{{ provider.code }} / City service provider</p>
+            <h3>
+              <a href="/providers/{{ provider.slug }}">{{ provider.name }}</a>
+            </h3>
+            <p>{{ provider.description }}</p>
+          </div>
+          <ul class="service-preview" aria-label="{{ provider.name }} services">
+            {% for service in provider.services %}
+              <li>
+                <a href="/services/{{ service.slug }}">
+                  <span>{{ service.name }}</span>
+                  <span class="service-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <a class="provider-action" href="/providers/{{ provider.slug }}">
+            View provider <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="platform-note">
+    <p class="eyebrow">Designed as one system</p>
+    <blockquote>
+      “Different providers should still feel like the same city.”
+    </blockquote>
+    <p>
+      Shared navigation, language, feedback, and accessibility patterns keep every
+      service coherent while each implementation remains independently owned.
+    </p>
+  </section>
+{% endblock %}

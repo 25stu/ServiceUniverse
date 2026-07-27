@@ -1,0 +1,21 @@
+[tool.pytest.ini_options]
+testpaths = [
+    "frontend/tests",
+    "gateway/tests",
+    "services",
+    "tests",
+]
+python_files = ["test_*.py"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+exclude = [
+    ".git",
+    ".venv",
+    "analytics/**/results",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

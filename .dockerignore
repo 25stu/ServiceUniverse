@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.coverage
+htmlcov
+analytics/**/results
+demo/recording_assets
+*.sqlite
+*.sqlite3
+*.db
+.env

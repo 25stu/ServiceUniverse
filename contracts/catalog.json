@@ -1,0 +1,87 @@
+{
+  "platform": {
+    "name": "ServiceUniverse",
+    "tagline": "One city. Everyday services, connected.",
+    "version": "0.1.0"
+  },
+  "providers": [
+    {
+      "slug": "municipal-utilities",
+      "code": "MU",
+      "name": "Municipal Utilities Authority",
+      "short_name": "Utilities",
+      "description": "Manage essential household services and get help when infrastructure fails.",
+      "accent": "blue",
+      "services": [
+        {
+          "slug": "water-billing",
+          "name": "Water Billing and Payment",
+          "owner": "A",
+          "port": 8101,
+          "implementation": "selected_microservice",
+          "summary": "Review water bills, make a payment, and retrieve a receipt."
+        },
+        {
+          "slug": "gas-fault",
+          "name": "Gas Fault Reporting and Repair Tracking",
+          "owner": "B",
+          "port": 8102,
+          "implementation": "business_service",
+          "summary": "Report a gas fault and follow its repair progress."
+        }
+      ]
+    },
+    {
+      "slug": "culture-recreation",
+      "code": "CR",
+      "name": "Municipal Culture & Recreation Services",
+      "short_name": "Culture & Recreation",
+      "description": "Find places to visit and manage access to shared cultural resources.",
+      "accent": "red",
+      "services": [
+        {
+          "slug": "attraction-reservation",
+          "name": "Attraction Recommendation and Reservation",
+          "owner": "C",
+          "port": 8201,
+          "implementation": "selected_microservice",
+          "summary": "Discover suitable attractions and reserve a visit."
+        },
+        {
+          "slug": "library-account",
+          "name": "Public Library Membership and Account",
+          "owner": "D",
+          "port": 8202,
+          "implementation": "business_service",
+          "summary": "Create a membership and review library account information."
+        }
+      ]
+    },
+    {
+      "slug": "parking-management",
+      "code": "PM",
+      "name": "City Parking Management Center",
+      "short_name": "Parking",
+      "description": "Plan where to park, understand availability, and settle parking charges.",
+      "accent": "green",
+      "services": [
+        {
+          "slug": "parking-availability",
+          "name": "Public Parking Availability",
+          "owner": "E",
+          "port": 8301,
+          "implementation": "selected_microservice",
+          "summary": "Compare public parking locations and current available capacity."
+        },
+        {
+          "slug": "parking-billing",
+          "name": "Parking Billing and Payment",
+          "owner": "E",
+          "port": 8302,
+          "implementation": "business_service",
+          "summary": "Review parking sessions, calculate charges, and make a payment."
+        }
+      ]
+    }
+  ]
+}

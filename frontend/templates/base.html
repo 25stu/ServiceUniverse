@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ServiceUniverse connects everyday municipal services in one place.">
+    <title>{% block title %}ServiceUniverse{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/site.css') }}">
+    {% block extra_head %}{% endblock %}
+    <script>
+      window.SERVICE_UNIVERSE = {
+        gatewayUrl: {{ gateway_public_url | tojson }}
+      };
+    </script>
+    <script src="{{ url_for('static', path='/js/site.js') }}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="ServiceUniverse home">
+        <span class="wordmark-mark" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+        <span>ServiceUniverse</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/#providers">Providers</a>
+        <span class="system-state" data-platform-status="checking">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span data-platform-status-label>Checking services</span>
+        </span>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <p>ServiceUniverse</p>
+      <p>A coherent civic service platform for CSCI927/427.</p>
+      <a href="/health">Frontend health</a>
+    </footer>
+  </body>
+</html>

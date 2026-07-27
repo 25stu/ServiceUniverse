@@ -1,0 +1,11 @@
+{
+  "success": false,
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "The requested resource was not found.",
+    "details": null
+  },
+  "meta": {
+    "request_id": "8dba0f0a-5b91-4f8d-9d39-7f6c6a7c6f00"
+  }
+}

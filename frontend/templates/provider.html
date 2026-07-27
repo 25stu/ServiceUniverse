@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ provider.name }} — ServiceUniverse{% endblock %}
+
+{% block content %}
+  <section class="provider-hero provider-{{ provider.accent }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ provider.short_name }}</span>
+    </nav>
+    <div class="provider-hero-grid">
+      <div>
+        <p class="eyebrow">{{ provider.code }} / Municipal provider</p>
+        <h1>{{ provider.name }}</h1>
+      </div>
+      <p class="provider-lede">{{ provider.description }}</p>
+    </div>
+  </section>
+
+  <section class="provider-services" aria-labelledby="available-services">
+    <header class="section-heading compact">
+      <p class="eyebrow">Available here</p>
+      <h2 id="available-services">Services from this provider</h2>
+    </header>
+    <div class="service-list">
+      {% for service in provider.services %}
+        <article class="service-row" data-service-slug="{{ service.slug }}">
+          <div class="service-sequence">{{ "%02d" | format(loop.index) }}</div>
+          <div class="service-copy">
+            <div class="service-meta">
+              <span class="service-status" data-service-status>Scaffold ready</span>
+              {% if service.implementation == "selected_microservice" %}
+                <span>Selected microservice</span>
+              {% else %}
+                <span>Business service</span>
+              {% endif %}
+            </div>
+            <h3><a href="/services/{{ service.slug }}">{{ service.name }}</a></h3>
+            <p>{{ service.summary }}</p>
+          </div>
+          <a class="round-link" href="/services/{{ service.slug }}" aria-label="Open {{ service.name }}">
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <nav class="provider-switcher" aria-label="Other providers">
+    <p>Continue exploring</p>
+    {% for item in catalog.providers %}
+      {% if item.slug != provider.slug %}
+        <a href="/providers/{{ item.slug }}">{{ item.short_name }} <span aria-hidden="true">↗</span></a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+{% endblock %}
