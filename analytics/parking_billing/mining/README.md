@@ -1,4 +1,3 @@
-# Mining
+# 流程挖掘
 
-Member C owns repeatable validation, cleaning, process discovery, conformance, and
-performance analysis here.
+成员 C 在此维护可重复运行的数据验证、清洗、流程发现、一致性和性能分析。

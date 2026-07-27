@@ -1,8 +1,8 @@
-# Feature integration playbook
+# 功能接入流程
 
-This is the standard path from an individual service change to the shared system.
+以下流程用于将个人服务功能安全接入共享系统。
 
-## 1. Identify the role and owned path
+## 1. 确认角色和负责目录
 
 ```bash
 python scripts/select_role.py B
@@ -11,78 +11,71 @@ git pull origin develop
 git switch -c feature/gas-submit-fault
 ```
 
-Read `.team-role`, `docs/TASKS.md`, `AGENTS.md`, and the service README before
-editing.
+修改前阅读 `.team-role`、`docs/TASKS.md`、`AGENTS.md` 和目标服务 README。
 
-## 2. Define the contract first
+## 2. 先定义契约
 
-Before frontend or Gateway code, agree on:
+前端或 Gateway 开发前，先确定：
 
-- resource URI and HTTP method;
-- request and response fields;
-- required versus optional fields;
-- allowed states and state transitions;
-- success status code;
-- error codes;
-- at least one success and one failure example.
+- URI 与 HTTP Method；
+- 请求和响应字段；
+- 必填与可选字段；
+- 状态及合法状态转换；
+- 成功状态码；
+- 错误码；
+- 至少一个成功示例和失败示例。
 
-Add the OpenAPI/JSON Schema and examples under `contracts/`. If another member's
-work is affected, open an Issue and request Leader review before implementation.
+将 OpenAPI/JSON Schema 和示例放在 `contracts/`。影响其他成员时，先创建 Issue
+并请求 Leader 评审。
 
-## 3. Implement inside the service
-
-Use the existing internal layers:
+## 3. 在服务内部实现
 
 ```text
-app/api/           HTTP routes only
-app/schemas/       Pydantic request and response models
-app/models/        persistence models
-app/repositories/  database access
-app/services/      business rules and workflow
+app/api/           HTTP 路由
+app/schemas/       Pydantic 请求/响应模型
+app/models/        持久化模型
+app/repositories/  数据访问
+app/services/      业务规则和流程
 ```
 
-Do not put business rules in the Gateway or Jinja template. Do not import another
-service's code or database.
+不要把业务规则写在 Gateway 或 Jinja 模板中，不得导入其他服务代码或数据库。
 
-## 4. Add service tests
+## 4. 增加服务测试
 
-Test:
+至少测试：
 
-- the normal business path;
-- invalid input;
-- resource not found;
-- illegal state transition or conflict;
-- one service-specific edge case.
+- 正常业务路径；
+- 非法输入；
+- 资源不存在；
+- 非法状态转换或冲突；
+- 一项服务特有的边界情况。
 
-Run only the service tests while iterating, then run the full suite.
+开发时可先运行服务自己的测试，提交前运行全部测试。
 
-## 5. Connect the Gateway
+## 5. 接入 Gateway
 
-Edit only the role-owned module in `gateway/app/routers/`. The Gateway should:
+只编辑自己负责的 `gateway/app/routers/` 模块。Gateway 应当：
 
-- read the downstream address from configuration;
-- forward `X-Request-ID`;
-- use an explicit timeout;
-- translate downstream failures into the platform error envelope;
-- avoid duplicating business validation.
+- 从配置读取下游地址；
+- 转发 `X-Request-ID`；
+- 设置明确超时；
+- 将下游错误转换为统一格式；
+- 不重复实现业务校验。
 
-Do not change `gateway/app/main.py` unless shared startup behaviour must change.
+除非需要修改共享启动行为，否则不要修改 `gateway/app/main.py`。
 
-## 6. Connect the shared frontend
+## 6. 接入共享前端
 
-Edit:
+编辑：
 
 ```text
 frontend/templates/services/<service-slug>.html
 ```
 
-Add service-specific CSS or JavaScript only when needed. Reuse the shared header,
-navigation, typography, colours, focus states, form patterns, and error language.
-Browser requests go through the Gateway public URL.
+只在必要时增加服务专属 CSS/JavaScript。复用公共导航、文字、颜色、焦点状态、
+表单与错误组件。浏览器业务请求必须通过 Gateway。
 
-Do not copy `base.html` or create another independent navigation bar.
-
-## 7. Verify integration
+## 7. 验证集成
 
 ```bash
 python -m ruff check .
@@ -92,24 +85,23 @@ docker compose up --build
 python scripts/smoke_test.py
 ```
 
-Manually complete the affected citizen workflow from the shared homepage.
+还要从共享主页手动完成受影响的市民流程。
 
-## 8. Open a focused pull request
+## 8. 创建 Pull Request
 
-Push the feature branch and fill in every relevant PR section. Include:
+PR 中填写：
 
-- role and service;
-- Issue/contract reference;
-- endpoints or schemas changed;
-- test commands and results;
-- screenshot for UI work;
-- known limitations;
-- required reviewer.
+- 当前角色和服务；
+- Issue/契约；
+- 修改的 Endpoint 或 Schema；
+- 测试命令与结果；
+- 页面截图；
+- 已知限制；
+- 请求的评审人。
 
-The Leader merges to `develop` after contract owner and cross-review approval.
+Leader 在契约负责人和交叉评审通过后合并到 `develop`。
 
-## Breaking changes
+## Breaking Change
 
-Never merge only one side of a breaking change. The contract, service, Gateway,
-frontend, tests, examples, and affected analytics activity names must land in one
-coordinated change or in a documented compatibility sequence.
+不要只合并破坏性修改的一部分。契约、服务、Gateway、前端、测试、示例和受影响的
+流程活动名称必须协调提交，或者提供明确的兼容过渡方案。

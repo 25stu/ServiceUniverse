@@ -1,25 +1,22 @@
 # Water Billing and Payment
 
-- Owner: Member A
-- Port: `8101`
-- Classification: selected microservice
-- Gateway module: `gateway/app/routers/water_billing.py`
-- Frontend view: `frontend/templates/services/water-billing.html`
+- 负责人：成员 A
+- 端口：`8101`
+- 类型：重点微服务
+- Gateway：`gateway/app/routers/water_billing.py`
+- 前端：`frontend/templates/services/water-billing.html`
 
-Minimum workflow:
+最小流程：
 
-1. retrieve a bill for a citizen;
-2. pay an eligible unpaid bill;
-3. retrieve the payment result or receipt;
-4. reject duplicate payment and invalid state transitions.
+1. 查询市民账单；
+2. 支付符合条件的未支付账单；
+3. 查询支付结果或收据；
+4. 拒绝重复支付和非法状态转换。
 
-This service must own its data, configuration, Dockerfile, tests, and API contract
-before final delivery.
-
-Run the current scaffold:
+最终交付前，本服务必须拥有独立数据、配置、Dockerfile、测试和 API 契约。
 
 ```bash
 python -m uvicorn services.water_billing.app.main:app --reload --port 8101
 ```
 
-Verify: <http://localhost:8101/health>
+验证：<http://localhost:8101/health>

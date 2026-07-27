@@ -1,3 +1,3 @@
-# Simulation or export
+# 模拟或导出
 
-Member E owns the repeatable Parking Billing event-log generation/export code.
+成员 E 在此维护可重复运行的 Parking Billing 日志生成或导出代码。

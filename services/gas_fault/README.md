@@ -1,23 +1,23 @@
 # Gas Fault Reporting and Repair Tracking
 
-- Owner: Member B
-- Port: `8102`
-- Classification: business service
-- Gateway module: `gateway/app/routers/gas_fault.py`
-- Frontend view: `frontend/templates/services/gas-fault.html`
-- Analytics workspace: `analytics/gas_fault/`
+- 负责人：成员 B
+- 端口：`8102`
+- 类型：业务服务
+- Gateway：`gateway/app/routers/gas_fault.py`
+- 前端：`frontend/templates/services/gas-fault.html`
+- 流程分析：`analytics/gas_fault/`
 
-Minimum workflow:
+最小流程：
 
-1. submit a fault report;
-2. retrieve the report and current repair status;
-3. perform valid status transitions;
-4. generate or simulate a reproducible process event log.
+1. 提交故障报告；
+2. 查询报告与当前维修状态；
+3. 执行合法状态转换；
+4. 生成或模拟可重复的流程事件日志。
 
-Freeze BPMN activity names before generating the final log.
+生成正式日志前，需要冻结 BPMN 活动名称。
 
 ```bash
 python -m uvicorn services.gas_fault.app.main:app --reload --port 8102
 ```
 
-Verify: <http://localhost:8102/health>
+验证：<http://localhost:8102/health>

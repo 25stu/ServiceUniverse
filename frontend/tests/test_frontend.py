@@ -12,6 +12,8 @@ def test_home_lists_all_providers() -> None:
     assert "Municipal Utilities Authority" in response.text
     assert "Municipal Culture &amp; Recreation Services" in response.text
     assert "City Parking Management Center" in response.text
+    assert response.text.count('href="/services/') == 6
+    assert "Everyday services." not in response.text
 
 
 def test_provider_page_lists_two_services() -> None:

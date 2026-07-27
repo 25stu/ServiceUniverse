@@ -1,47 +1,47 @@
-## Purpose / 修改目的
+## 修改目的
 
-- Team role:
-- Service or shared component:
-- Related Issue/contract:
+- 成员角色：
+- 服务或共享组件：
+- 相关 Issue/契约：
 
-Describe one focused outcome.
+请描述一个明确、集中的结果。
 
-## Scope / 修改范围
+## 修改范围
 
-- Owned paths changed:
-- Shared paths changed:
-- Known files intentionally not changed:
+- 修改的负责目录：
+- 修改的共享目录：
+- 有意暂不修改的内容：
 
-## Contract and integration impact
+## 契约与集成影响
 
-- [ ] No API/schema/activity-name change
-- [ ] Backward-compatible change with contract updated
-- [ ] Coordinated breaking change approved by affected owners and Leader
+- [ ] 不修改 API、Schema 或活动名称
+- [ ] 向后兼容，并已更新契约
+- [ ] Breaking Change，已获得相关负责人和 Leader 同意
 
-List endpoints, fields, statuses, errors, ports, or process activities changed:
+列出修改的 Endpoint、字段、状态、错误码、端口或流程活动：
 
-## Verification
+## 验证
 
 - [ ] `python -m ruff check .`
 - [ ] `python -m pytest`
 - [ ] `docker compose config`
-- [ ] `docker compose up --build` when integration is affected
-- [ ] `python scripts/smoke_test.py` when integration is affected
-- [ ] UI screenshot attached when frontend is affected
-- [ ] No secrets, `.env`, `.team-role`, database, or generated result committed
+- [ ] 影响集成时执行 `docker compose up --build`
+- [ ] 影响集成时执行 `python scripts/smoke_test.py`
+- [ ] 前端修改已附截图
+- [ ] 未提交密钥、`.env`、`.team-role`、数据库或生成结果
 
-Paste relevant command results:
+粘贴相关命令结果：
 
-## Manual citizen workflow
+## 人工业务流程
 
-State the start page, actions, and expected result used for manual verification.
+说明从哪个页面开始、执行哪些操作、预期得到什么结果。
 
-## Known limitations
+## 已知限制
 
-List unfinished or deliberately deferred work. Do not write “none” unless checked.
+列出尚未完成或明确推迟的内容。
 
-## Review
+## 评审
 
-- Contract/service owner:
-- Cross-reviewer:
-- Leader review required: yes / no
+- 契约/服务负责人：
+- 交叉评审人：
+- 是否需要 Leader 评审：

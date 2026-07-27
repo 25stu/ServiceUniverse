@@ -1,3 +1,3 @@
-# Simulation
+# 流程模拟
 
-Place the deterministic Gas Fault event-log generator here.
+在此目录保存可重复运行的 Gas Fault 事件日志生成器。

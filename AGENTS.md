@@ -1,62 +1,58 @@
-# ServiceUniverse agent instructions
+# ServiceUniverse AI 协作指令
 
-These instructions apply to the whole repository. Human contributors and AI
-assistants follow the same integration rules.
+本文件适用于整个仓库。人类成员与 AI 助手遵守同一套集成规则。
 
-## Start every task here
+## 每次开始任务时
 
-1. Read `.team-role` if it exists.
-2. Read `docs/TASKS.md` and locate that role's owned paths and hand-offs.
-3. Read `docs/ARCHITECTURE.md`, `API_CONVENTION.md`, and the target service README.
-4. Read `docs/INTEGRATION_PLAYBOOK.md` before changing a shared contract, Gateway,
-   shared frontend code, Compose, or CI.
-5. Inspect the current branch and working tree before editing.
+1. 如果存在 `.team-role`，先读取它。
+2. 阅读 `docs/TASKS.md`，确认当前角色负责的目录和交接对象。
+3. 阅读 `docs/ARCHITECTURE.md`、`API_CONVENTION.md` 和目标服务 README。
+4. 修改共享契约、Gateway、共享前端、Compose 或 CI 前，阅读
+   `docs/INTEGRATION_PLAYBOOK.md`。
+5. 编辑前检查当前分支与工作区状态。
 
-If `.team-role` is missing, do not guess the contributor's identity. Ask the human
-to run `python scripts/select_role.py <A|B|C|D|E|LEADER>`.
+如果 `.team-role` 不存在，不要猜测成员身份。请让用户运行：
 
-## Repository scope
+```bash
+python scripts/select_role.py <A|B|C|D|E|LEADER>
+```
 
-This repository contains executable code, build configuration, API contracts,
-tests, analytics scripts, sample data, and technical runbooks. The final report,
-meeting reports, BSRL, BPMN, semantic annotations, ArchiMate, and SoaML are
-maintained in the team's external report workspace.
+## 仓库范围
 
-Code, API names, schemas, comments intended for delivery, and user-facing UI copy
-must be English. Temporary team discussion may be Chinese.
+仓库保存可执行代码、构建配置、API 契约、测试、流程分析脚本、演示数据和技术说明。
+最终报告、会议报告、BSRL、BPMN、语义标注、ArchiMate 与 SoaML 在外部
+Master Report 工作区维护。
 
-## Architecture rules
+团队技术说明可以使用中文。代码标识、API 路径、JSON 字段、状态、错误码、
+交付用代码注释和最终用户界面文字使用英文。
 
-- The platform contains six business services.
-- Exactly three are selected for full microservice implementation:
-  `water-billing`, `attraction-reservation`, and `parking-availability`.
-- The shared browser UI calls the Gateway, not service ports directly.
-- Services never import another service's source code or read another service's
-  database.
-- Service addresses come from environment variables.
-- Contract changes happen before dependent Gateway or frontend changes.
-- `contracts/catalog.json` is the source of truth for provider/service names,
-  owners, ports, and selected-microservice labels.
+## 架构规则
 
-Running a service in a separate Compose process does not by itself make it one of
-the three selected microservices.
+- 平台共有六项业务服务。
+- 三项重点微服务是 `water-billing`、`attraction-reservation` 和
+  `parking-availability`。
+- 浏览器业务请求只调用 Gateway，不直接调用服务端口。
+- 服务不得导入其他服务源码或读取其他服务数据库。
+- 服务地址来自环境变量。
+- 先修改契约，再修改依赖契约的 Gateway 和前端。
+- `contracts/catalog.json` 是 Provider、Service、负责人、端口和重点微服务标记
+  的唯一来源。
 
-## Change boundaries
+Compose 将六项服务运行在独立进程中，只是开发集成方式，不代表六项都被认定为
+重点微服务。
 
-- Work inside the paths owned by the current role.
-- Changes to `contracts/`, `gateway/`, shared frontend files, `compose.yaml`,
-  dependencies, or CI require an integration note in the pull request and Leader
-  review.
-- Service-specific frontend work belongs in
-  `frontend/templates/services/<service-slug>.html` and optional matching asset
-  files. Do not duplicate the shared header, footer, tokens, or navigation.
-- Never silently rename endpoints, JSON fields, statuses, activity names, ports,
-  or service slugs.
-- Preserve unrelated changes in a dirty working tree.
+## 修改边界
 
-## Required verification
+- 主要在当前角色负责的目录内工作。
+- 修改 `contracts/`、Gateway 公共文件、共享前端、`compose.yaml`、依赖或 CI 时，
+  必须在 PR 中说明集成影响，并由 Leader 评审。
+- 服务页面只修改
+  `frontend/templates/services/<service-slug>.html` 及对应专属资源。
+- 不得复制公共导航、页脚、设计变量或错误组件。
+- 不得静默重命名 Endpoint、字段、状态、活动名称、端口或 Service slug。
+- 工作区已有无关修改时必须保留，不得覆盖或删除。
 
-Run before requesting review:
+## 提交评审前验证
 
 ```bash
 python -m ruff check .
@@ -64,17 +60,15 @@ python -m pytest
 docker compose config
 ```
 
-For integration-affecting changes, also run:
+影响集成时还要运行：
 
 ```bash
 docker compose up --build
 python scripts/smoke_test.py
 ```
 
-## Definition of done
+## 完成标准
 
-A task is done only when its contract, implementation, validation, tests,
-service-specific README, Gateway integration, and frontend integration are
-consistent where applicable. Record commands and results in the pull request.
-Do not commit secrets, `.env`, `.team-role`, databases, virtual environments, or
-generated analytics results.
+功能的契约、实现、校验、测试、服务 README、Gateway 与前端接入必须保持一致。
+PR 中记录执行过的命令和结果。不得提交密钥、`.env`、`.team-role`、数据库、
+虚拟环境或自动生成的分析结果。

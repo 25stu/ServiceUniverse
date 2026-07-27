@@ -1,9 +1,8 @@
-# Parking Billing analytics
+# Parking Billing 流程分析
 
-Ownership:
+分工：
 
-- Member E: `simulation_or_export/`, raw event logs, activity dictionary;
-- Member C: validation, cleaning, `mining/`, and interpreted results.
+- 成员 E：`simulation_or_export/`、原始事件日志和活动词典；
+- 成员 C：日志验证、清洗、`mining/` 和结果解释。
 
-Keep raw input immutable. A cleaning script must write a new file rather than
-editing the original log.
+原始输入必须保持不变。清洗脚本应写入新文件，不得覆盖原日志。

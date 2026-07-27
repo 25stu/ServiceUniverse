@@ -1,4 +1,4 @@
-# Event logs
+# 事件日志
 
-Keep raw Parking Billing logs immutable. Write cleaned logs to a separately named
-file and record the transformation in code.
+原始 Parking Billing 日志必须保持不变。清洗后的数据使用新文件名，并在代码中
+记录转换过程。

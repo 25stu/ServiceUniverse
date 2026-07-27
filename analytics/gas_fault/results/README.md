@@ -1,4 +1,3 @@
-# Generated results
+# 生成结果
 
-Generated result files are ignored by default. Keep only small intentional examples
-needed to verify the pipeline.
+自动生成的结果默认被 Git 忽略。只保留验证流程所需的小型示例。

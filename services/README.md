@@ -1,20 +1,19 @@
-# Business service implementation guide
+# 业务服务实现说明
 
-Each child directory is owned by one role and follows the same internal shape:
+每个子目录由对应成员负责，并使用统一内部结构：
 
 ```text
-app/main.py       FastAPI startup and router registration
-app/api/          HTTP route handlers
-app/schemas/      Pydantic API models
-app/models/       persistence models
-app/repositories/ data access
-app/services/     business rules
-tests/            service-local tests
-data/             deterministic seed/demo data
+app/main.py       FastAPI 启动与路由注册
+app/api/          HTTP 路由
+app/schemas/      Pydantic API 模型
+app/models/       持久化模型
+app/repositories/ 数据访问
+app/services/     业务规则
+tests/            服务内部测试
+data/             可重复的 Seed/Demo 数据
 ```
 
-The six directories represent six business services. Only Water Billing,
-Attraction Reservation, and Parking Availability are selected for full
-microservice implementation. See `docs/ARCHITECTURE.md`.
+六个目录代表六项业务服务。只有 Water Billing、Attraction Reservation 和
+Parking Availability 是三项重点微服务，详见 `docs/ARCHITECTURE.md`。
 
-Do not create imports between sibling service directories.
+兄弟服务目录之间禁止互相导入。

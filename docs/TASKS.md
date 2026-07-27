@@ -1,145 +1,138 @@
-# Team tasks and code ownership
+# 成员任务与代码归属
 
-This file maps each team role to executable repository work. Report and modelling
-deliverables are intentionally out of scope here.
+本文件只描述可执行仓库工作。报告与建模产出不在这里维护。
 
 ## Leader
 
-Owned paths:
+主要目录：
 
-- shared files in `frontend/`;
-- `gateway/app/main.py` and shared Gateway utilities;
-- `compose.yaml`, root Docker configuration, dependencies, and CI;
-- `contracts/catalog.json`;
-- root technical documentation.
+- `frontend/` 共享文件；
+- `gateway/app/main.py` 与 Gateway 公共工具；
+- `compose.yaml`、根 Docker 配置、依赖和 CI；
+- `contracts/catalog.json`；
+- 根目录技术说明。
 
-Responsibilities:
+职责：
 
-- maintain the runnable integration baseline;
-- review every breaking contract or shared UI change;
-- keep `main` stable and `develop` runnable;
-- run weekly integration, smoke tests, and release packaging.
+- 维护可运行的集成基线；
+- 评审 Breaking Contract 和共享 UI 修改；
+- 保持 `main` 稳定、`develop` 可运行；
+- 执行每周集成、smoke test 和最终打包。
 
-## Member A — Water Billing and Payment
+## 成员 A — Water Billing and Payment
 
-Owned paths:
+主要目录：
 
-- `services/water_billing/`;
-- `gateway/app/routers/water_billing.py`;
-- `frontend/templates/services/water-billing.html`;
-- Water contract and examples under `contracts/`.
+- `services/water_billing/`；
+- `gateway/app/routers/water_billing.py`；
+- `frontend/templates/services/water-billing.html`；
+- `contracts/` 中的 Water 契约与示例。
 
-Minimum code scope:
+最小代码范围：
 
-- retrieve a citizen's bill;
-- pay an eligible unpaid bill;
-- retrieve payment result or receipt;
-- reject duplicate payment and illegal state transitions;
-- independent data store and Dockerfile because this is a selected microservice.
+- 查询市民账单；
+- 支付符合条件的未支付账单；
+- 查询支付结果或收据；
+- 拒绝重复支付和非法状态转换；
+- 由于是重点微服务，需要独立数据存储和服务 Dockerfile。
 
-Hand-off: notify Leader when the contract changes; provide stable endpoints to the
-shared frontend and demonstration workflow.
+契约变化时通知 Leader，并提供稳定 Endpoint 给共享前端和演示流程。
 
-## Member B — Gas Fault Reporting and Repair Tracking
+## 成员 B — Gas Fault Reporting and Repair Tracking
 
-Owned paths:
+主要目录：
 
-- `services/gas_fault/`;
-- `gateway/app/routers/gas_fault.py`;
-- `frontend/templates/services/gas-fault.html`;
-- `analytics/gas_fault/`;
-- Gas contract and examples under `contracts/`.
+- `services/gas_fault/`；
+- `gateway/app/routers/gas_fault.py`；
+- `frontend/templates/services/gas-fault.html`；
+- `analytics/gas_fault/`；
+- Gas 契约与示例。
 
-Minimum code scope:
+最小代码范围：
 
-- create a fault report;
-- retrieve a report and its repair status;
-- update status through valid repair stages;
-- generate or simulate event logs whose activities match the frozen BPMN activity
-  dictionary.
+- 创建故障报告；
+- 查询报告和维修状态；
+- 按合法阶段更新维修状态；
+- 生成或模拟活动名称与 BPMN 词典一致的事件日志。
 
-Hand-off: provide reproducible Gas Fault logs and analysis commands.
+需要提供可重复执行的日志生成和分析命令。
 
-## Member C — Attraction Recommendation and Reservation
+## 成员 C — Attraction Recommendation and Reservation
 
-Owned paths:
+主要目录：
 
-- `services/attraction_reservation/`;
-- `gateway/app/routers/attraction_reservation.py`;
-- `frontend/templates/services/attraction-reservation.html`;
-- `analytics/parking_billing/mining/` and interpreted results;
-- Attraction contract and examples under `contracts/`.
+- `services/attraction_reservation/`；
+- `gateway/app/routers/attraction_reservation.py`；
+- `frontend/templates/services/attraction-reservation.html`；
+- `analytics/parking_billing/mining/` 与解释结果；
+- Attraction 契约与示例。
 
-Minimum code scope:
+最小代码范围：
 
-- list or recommend attractions from meaningful criteria;
-- create and retrieve a reservation;
-- enforce capacity and reservation-state rules;
-- independent data store and Dockerfile because this is a selected microservice.
+- 根据条件列出或推荐景点；
+- 创建和查询预约；
+- 校验容量冲突和预约状态；
+- 由于是重点微服务，需要独立数据存储和服务 Dockerfile。
 
-Hand-off from E: receive the frozen Parking Billing activity dictionary and raw
-event log before mining. Never overwrite raw logs during cleaning.
+从 E 接收冻结后的 Parking Billing 活动词典和原始日志；清洗时不得覆盖原始日志。
 
-## Member D — Public Library Membership and Account
+## 成员 D — Public Library Membership and Account
 
-Owned paths:
+主要目录：
 
-- `services/library_account/`;
-- `gateway/app/routers/library_account.py`;
-- `frontend/templates/services/library-account.html`;
-- Library contract and examples under `contracts/`.
+- `services/library_account/`；
+- `gateway/app/routers/library_account.py`；
+- `frontend/templates/services/library-account.html`；
+- Library 契约与示例。
 
-Minimum code scope:
+最小代码范围：
 
-- create a library membership;
-- retrieve membership/account information;
-- expose representative borrowing or account standing information;
-- implement validation and useful error states.
+- 创建图书馆会员；
+- 查询会员与账户信息；
+- 提供代表性的借阅或账户状态信息；
+- 实现校验和明确错误状态。
 
-Repository review role: check cross-service naming and API consistency. ArchiMate
-and SoaML work remains in the external report workspace.
+仓库评审职责：检查跨服务命名、Schema 和 API 一致性。ArchiMate 与 SoaML 在
+外部报告工作区完成。
 
-## Member E — City Parking Management Center
+## 成员 E — City Parking Management Center
 
-Owned paths:
+主要目录：
 
-- `services/parking_availability/`;
-- `services/parking_billing/`;
-- both parking Gateway route modules;
-- both parking service templates;
-- `analytics/parking_billing/simulation_or_export/` and raw event logs;
-- Parking contracts and examples under `contracts/`.
+- `services/parking_availability/`；
+- `services/parking_billing/`；
+- 两个 Parking Gateway router；
+- 两个 Parking 前端模板；
+- `analytics/parking_billing/simulation_or_export/` 与原始日志；
+- Parking 契约与示例。
 
-Parking Availability minimum code scope:
+Parking Availability 最小代码范围：
 
-- list parking locations and available capacity;
-- retrieve one parking location;
-- provide deterministic capacity-change/demo behaviour;
-- independent data store and Dockerfile because this is a selected microservice.
+- 列出停车场和当前余位；
+- 查询单个停车场；
+- 提供可重复演示的余位变化；
+- 由于是重点微服务，需要独立数据存储和服务 Dockerfile。
 
-Parking Billing minimum code scope:
+Parking Billing 最小代码范围：
 
-- create or retrieve a parking session;
-- end a session and calculate the charge;
-- pay an eligible charge;
-- emit or simulate the process events required by C.
+- 创建或查询停车会话；
+- 结束会话并计算费用；
+- 支付符合条件的费用；
+- 生成或模拟 C 所需流程事件。
 
-Hand-off to C: freeze activity names, lifecycle values, normal paths, exceptional
-paths, and log schema before formal mining.
+正式分析前与 C 冻结活动名称、生命周期、正常/异常路径和日志 Schema。
 
-## Shared files and review
+## 共享文件
 
-No member owns a shared file exclusively enough to bypass review. Changes to these
-paths require Leader review:
+下列文件需要 Leader 评审：
 
-- `contracts/catalog.json`;
-- `API_CONVENTION.md`;
-- `frontend/templates/base.html`;
-- `frontend/static/css/site.css`;
-- `gateway/app/main.py`;
-- `compose.yaml`;
-- dependency files;
-- `.github/workflows/`.
+- `contracts/catalog.json`；
+- `API_CONVENTION.md`；
+- `frontend/templates/base.html`；
+- `frontend/static/css/site.css`；
+- `gateway/app/main.py`；
+- `compose.yaml`；
+- 依赖文件；
+- `.github/workflows/`。
 
-Use the pull request template to state the affected owner, contract impact,
-commands run, and integration result.
+PR 中必须说明角色、契约影响、验证命令与集成结果。

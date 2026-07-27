@@ -1,46 +1,39 @@
-# ServiceUniverse architecture
+# ServiceUniverse 架构说明
 
-## 1. Service and microservice terminology
+## 1. Service 与 Microservice 的区别
 
-The course lecture *Service-oriented architectural patterns — Microservices*
-distinguishes the two concepts:
+课程课件 *Service-oriented architectural patterns — Microservices* 对两者的定义是：
 
-- A software service is accessed remotely through a published interface while its
-  implementation is hidden.
-- A microservice is additionally small-scale, focused on a single responsibility,
-  self-contained, independently deployable, and responsible for its own data.
-- A good microservice has high cohesion, low coupling, lightweight communication,
-  and represents a business capability.
+- Software Service 通过公开接口被远程访问，内部实现对调用者隐藏。
+- Microservice 在此基础上还强调小粒度、单一职责、自包含、独立数据和独立部署。
+- 良好的 Microservice 应高内聚、低耦合，使用轻量通信，并对应业务能力。
 
-ServiceUniverse therefore uses this explicit interpretation:
+因此本项目统一采用以下口径：
 
-1. The platform contains **six business services**. All six have executable code and
-   a published HTTP interface.
-2. Exactly **three selected services receive full microservice treatment** for Part E:
-   Water Billing, Attraction Reservation, and Parking Availability.
-3. The other three services remain executable business services but may use a
-   simpler implementation and deployment design.
+1. 平台共有 **6 项业务服务**，六项都需要可执行代码和 HTTP 接口。
+2. Part E 选定 **3 项重点微服务**：Water Billing、Attraction Reservation 和
+   Parking Availability。
+3. 另外三项仍是可执行的业务服务，但可以采用相对简化的设计与部署。
 
-Running all six services as separate processes in the development Compose file is
-an integration convenience. It is not, by itself, a claim that all six satisfy the
-full microservice design criteria.
+开发阶段使用 Compose 将六项服务运行在不同进程中，是为了方便集成；这件事本身
+不能证明六项都满足完整的 Microservice 要求。
 
-## 2. Selected microservice acceptance criteria
+## 2. 三项重点微服务的验收条件
 
-The three selected microservices must each have:
+每项重点微服务必须具备：
 
-- one clearly bounded business capability;
-- an independent application configuration;
-- an independent database or data store;
-- no imports from another service;
-- no access to another service's database;
-- a service-local Dockerfile and dependency declaration before final delivery;
-- health checks and automated tests;
-- a documented API contract;
-- the ability to build, start, stop, test, and demonstrate independently;
-- service-specific UI management code integrated into the shared frontend shell.
+- 清晰且集中的业务能力；
+- 独立应用配置；
+- 独立数据库或数据存储；
+- 不导入其他服务源码；
+- 不读取其他服务数据库；
+- 最终交付前拥有服务自己的 Dockerfile 和依赖声明；
+- 健康检查和自动化测试；
+- 明确的 API 契约；
+- 可以独立构建、启动、停止、测试和演示；
+- 在共享前端外壳内拥有服务专属 UI 代码。
 
-## 3. Runtime structure
+## 3. 运行结构
 
 ```mermaid
 flowchart LR
@@ -54,51 +47,44 @@ flowchart LR
     Gateway --> ParkingBill[Parking Billing :8302]
 ```
 
-The browser calls only the Gateway for business data. Service ports remain exposed
-in the starter solely for development, API inspection, and independent testing.
+浏览器的业务数据请求只调用 Gateway。初始化阶段暴露六个服务端口，仅用于开发、
+查看 OpenAPI 和独立测试。
 
-## 4. Communication decisions
+## 4. 通信决策
 
-- External style: REST over HTTP with JSON representations.
-- Current interaction: synchronous request/response.
-- Coordination: the Gateway provides the public entry point and common error
-  handling; it does not contain business logic.
-- Address discovery: environment variables.
-- Request tracing: `X-Request-ID`.
-- Failure behaviour: explicit timeouts and unified `502`, `503`, or `504` errors.
-- Shared database access: prohibited.
+- 外部风格：HTTP REST + JSON。
+- 当前交互：同步请求/响应。
+- 协调方式：Gateway 提供公共入口和错误转换，但不包含业务逻辑。
+- 地址发现：环境变量。
+- 请求追踪：`X-Request-ID`。
+- 故障处理：明确超时，并统一转换为 `502`、`503` 或 `504`。
+- 共享数据库：禁止。
 
-Asynchronous messaging or a message broker should be added only if a concrete
-workflow requires it. It is not required merely to make the architecture look more
-complex.
+只有真实流程需要时才引入异步消息或 Message Broker，不为了让架构看起来复杂而增加。
 
-## 5. Source-of-truth files
+## 5. 信息来源
 
-- `contracts/catalog.json`: provider names, service names, slugs, owners, ports,
-  and selected-microservice labels.
-- `API_CONVENTION.md`: platform-wide HTTP and JSON rules.
-- `contracts/schemas/`: service-specific OpenAPI or JSON Schema contracts.
-- `.env.example`: host-development addresses.
-- `compose.yaml`: container-development addresses and startup graph.
+- `contracts/catalog.json`：Provider、Service、slug、负责人、端口与重点微服务标记。
+- `API_CONVENTION.md`：全平台 HTTP 与 JSON 规则。
+- `contracts/schemas/`：各服务 OpenAPI 或 JSON Schema。
+- `.env.example`：宿主机开发地址。
+- `compose.yaml`：容器地址与启动关系。
 
-Changing a slug, port, field, status, or activity name requires updating its source
-of truth first and documenting the impact in the pull request.
+修改 slug、端口、字段、状态或活动名称时，必须先修改相应信息来源，并在 PR 中
+说明影响。
 
-## 6. Shared frontend ownership
+## 6. 共享前端边界
 
-The frontend provides a single civic identity, navigation system, accessibility
-baseline, and error language. A service owner edits only:
+前端提供统一品牌、导航、可访问性和错误语言。服务负责人只编辑：
 
-- `frontend/templates/services/<service-slug>.html`;
-- optional service-specific CSS or JavaScript;
-- tests for that service view.
+- `frontend/templates/services/<service-slug>.html`；
+- 必要的服务专属 CSS/JavaScript；
+- 对应页面测试。
 
-Shared templates and `frontend/static/css/site.css` remain Leader-owned. This
-prevents each service from becoming a visually unrelated mini-site.
+公共模板和 `frontend/static/css/site.css` 由 Leader 维护，避免六项服务变成六套
+互不相关的网站。
 
-## 7. Development image versus final deployment
+## 7. 开发镜像与最终部署
 
-The root `Dockerfile` is a common development image so a new contributor can launch
-the entire skeleton immediately. Before final delivery, each selected microservice
-must gain its own Dockerfile and dependency boundary. That later step demonstrates
-independent deployability without making initial collaboration unnecessarily hard.
+根目录 `Dockerfile` 是方便新成员一键启动的公共开发镜像。最终提交前，三项重点
+微服务需要分别建立自己的 Dockerfile 和依赖边界，以证明它们可以独立部署。

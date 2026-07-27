@@ -1,23 +1,23 @@
 # Parking Billing and Payment
 
-- Owner: Member E
-- Port: `8302`
-- Classification: business service
-- Gateway module: `gateway/app/routers/parking_billing.py`
-- Frontend view: `frontend/templates/services/parking-billing.html`
-- Analytics hand-off: `analytics/parking_billing/`
+- 负责人：成员 E
+- 端口：`8302`
+- 类型：业务服务
+- Gateway：`gateway/app/routers/parking_billing.py`
+- 前端：`frontend/templates/services/parking-billing.html`
+- 流程分析交接：`analytics/parking_billing/`
 
-Minimum workflow:
+最小流程：
 
-1. create or retrieve a parking session;
-2. end a session and calculate its charge;
-3. pay an eligible charge;
-4. emit or simulate the process events required by Member C.
+1. 创建或查询停车会话；
+2. 结束会话并计算费用；
+3. 支付符合条件的费用；
+4. 生成或模拟成员 C 所需流程事件。
 
-Freeze activity and lifecycle names with Member C before the final log.
+最终日志生成前，成员 C 与 E 共同冻结活动名称和生命周期。
 
 ```bash
 python -m uvicorn services.parking_billing.app.main:app --reload --port 8302
 ```
 
-Verify: <http://localhost:8302/health>
+验证：<http://localhost:8302/health>

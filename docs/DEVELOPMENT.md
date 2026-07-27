@@ -1,13 +1,8 @@
-# Development environment
+# 开发环境说明
 
-## Recommended path: Docker
+## 推荐方式：Docker
 
-Install:
-
-- Git;
-- Docker Desktop with Docker Compose v2.
-
-Then run:
+需要安装 Git 和带 Compose v2 的 Docker Desktop。
 
 ```bash
 git clone <repository-url>
@@ -16,10 +11,9 @@ python scripts/select_role.py A
 docker compose up --build
 ```
 
-Open <http://localhost:8000>. The first build downloads Python packages and can
-take several minutes.
+打开 <http://localhost:8000>。第一次构建需要下载 Python 依赖，时间会较长。
 
-Useful commands:
+常用命令：
 
 ```bash
 docker compose ps
@@ -28,18 +22,17 @@ docker compose restart water-billing
 docker compose down
 ```
 
-Do not use `docker compose down -v` unless you intentionally want to remove
-development data volumes after they are introduced.
+除非明确需要删除开发数据卷，否则不要执行 `docker compose down -v`。
 
-## Local Python path
+## 本地 Python 方式
 
-Use Python 3.11:
+统一使用 Python 3.11：
 
 ```bash
 python -m venv .venv
 ```
 
-PowerShell:
+PowerShell：
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
@@ -48,7 +41,7 @@ python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Bash:
+Bash：
 
 ```bash
 source .venv/bin/activate
@@ -57,42 +50,36 @@ python -m pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Run one component:
+运行单个服务：
 
 ```bash
 python -m uvicorn services.water_billing.app.main:app --reload --port 8101
 ```
 
-Run the shared frontend:
+运行前端：
 
 ```bash
 python -m uvicorn frontend.app.main:app --reload --port 8000
 ```
 
-Run the Gateway:
+运行 Gateway：
 
 ```bash
 python -m uvicorn gateway.app.main:app --reload --port 8080
 ```
 
-When running locally, each required downstream service must be started in its own
-terminal. Docker Compose is preferred for full integration.
+本地运行完整系统时，每个下游服务需要单独终端，因此完整集成优先使用 Compose。
 
-## Quality checks
+## 质量检查
 
 ```bash
 python -m ruff check .
 python -m pytest
 docker compose config
-```
-
-After starting the platform:
-
-```bash
 python scripts/smoke_test.py
 ```
 
-## Port map
+## 端口表
 
 | Component | Port |
 |---|---:|
@@ -105,28 +92,20 @@ python scripts/smoke_test.py
 | Parking Availability | 8301 |
 | Parking Billing | 8302 |
 
-Do not silently choose another permanent port. Coordinate changes through
-`contracts/catalog.json`, Compose, `.env.example`, and documentation.
+不要为了绕过本地冲突而静默修改共享端口。
 
-## Common problems
+## 常见问题
 
-### `services must be a mapping`
+### Gateway 显示所有服务不可用
 
-Your branch probably has an incomplete `compose.yaml`. Restore or merge the current
-integration version before continuing.
+Docker 容器内必须使用 `http://water-billing:8101` 之类的 Compose 服务名，
+不能使用 `localhost`。已提交的 Compose 文件会自动设置。
 
-### Gateway reports all services unavailable
+### 浏览器显示 Gateway 不可用
 
-Inside Docker, service URLs must use Compose names such as
-`http://water-billing:8101`, not `localhost`. The committed Compose file already
-sets these values.
+先确认 <http://localhost:8080/health> 可访问，并检查 `FRONTEND_ORIGINS` 是否包含
+<http://localhost:8000>。
 
-### Browser reports Gateway unavailable
+### 端口被占用
 
-Confirm <http://localhost:8080/health> works and that
-`FRONTEND_ORIGINS` includes <http://localhost:8000>.
-
-### A port is already in use
-
-Stop the previous development process or conflicting container. Avoid changing the
-shared port map as a local workaround.
+停止之前启动的进程或容器。不要直接修改团队端口表。

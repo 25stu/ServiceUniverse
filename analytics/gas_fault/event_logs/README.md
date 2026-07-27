@@ -1,4 +1,4 @@
-# Event logs
+# 事件日志
 
-Store small, non-sensitive raw or simulated Gas Fault examples here. Label
-simulated data explicitly and do not edit raw logs in place.
+在此保存小型、无敏感数据的 Gas Fault 原始或模拟日志。必须明确标记模拟数据，
+并且不得原地修改原始日志。
