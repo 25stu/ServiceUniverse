@@ -12,10 +12,36 @@
 2. 创建和查询预约；
 3. 拒绝容量冲突和非法预约状态转换。
 
-最终交付前，本服务必须拥有独立数据、配置、Dockerfile、测试和 API 契约。
+当前实现提供可重复的内置演示数据、服务专用 Dockerfile、单元测试和 API 契约。
+生产化数据库仍保留为后续扩展点。
+
+## API
+
+- `GET /api/v1/attractions`
+  - 查询参数：`category`、`district`、`indoor`、`min_rating`、`visit_date`、
+    `visitor_count`、`recommend`
+  - 返回按筛选条件匹配的景点；`recommend=true` 时按推荐分排序。
+- `POST /api/v1/reservations`
+  - 创建预约，校验景点存在、开放日和当日剩余容量。
+- `GET /api/v1/reservations/{reservation_id}`
+  - 查询预约详情。
+- `PATCH /api/v1/reservations/{reservation_id}/status`
+  - 支持 `confirmed -> completed|cancelled` 等合法状态转换，拒绝非法回退。
+
+主要错误码：
+
+- `ATTRACTION_NOT_FOUND`
+- `ATTRACTION_CLOSED`
+- `CAPACITY_CONFLICT`
+- `RESERVATION_NOT_FOUND`
+- `INVALID_RESERVATION_STATUS`
 
 ```bash
 python -m uvicorn services.attraction_reservation.app.main:app --reload --port 8201
 ```
 
 验证：<http://localhost:8201/health>
+
+```bash
+python -m pytest services/attraction_reservation tests/test_service_scaffolds.py
+```

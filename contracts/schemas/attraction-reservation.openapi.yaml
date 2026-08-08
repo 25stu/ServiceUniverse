@@ -1,0 +1,129 @@
+openapi: 3.1.0
+info:
+  title: Attraction Recommendation and Reservation Service
+  version: 0.1.0
+paths:
+  /api/v1/attractions:
+    get:
+      summary: List or recommend attractions.
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [museum, park, landmark, heritage]
+        - name: district
+          in: query
+          schema:
+            type: string
+            enum: [central, harbour, north]
+        - name: indoor
+          in: query
+          schema:
+            type: boolean
+        - name: min_rating
+          in: query
+          schema:
+            type: number
+            minimum: 0
+            maximum: 5
+            default: 0
+        - name: visit_date
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: visitor_count
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 1
+        - name: recommend
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Attractions matching the filters.
+  /api/v1/reservations:
+    post:
+      summary: Create a reservation when capacity is available.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservationCreate"
+      responses:
+        "201":
+          description: Reservation created.
+        "404":
+          description: Attraction not found.
+        "409":
+          description: Capacity conflict.
+  /api/v1/reservations/{reservation_id}:
+    get:
+      summary: Retrieve a reservation.
+      parameters:
+        - name: reservation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reservation found.
+        "404":
+          description: Reservation not found.
+  /api/v1/reservations/{reservation_id}/status:
+    patch:
+      summary: Update reservation status using allowed transitions.
+      parameters:
+        - name: reservation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  $ref: "#/components/schemas/ReservationStatus"
+      responses:
+        "200":
+          description: Reservation status updated.
+        "409":
+          description: Illegal status transition.
+components:
+  schemas:
+    ReservationCreate:
+      type: object
+      required: [attraction_id, citizen_id, visit_date, visitor_count]
+      properties:
+        attraction_id:
+          type: string
+        citizen_id:
+          type: string
+          minLength: 3
+          maxLength: 40
+        visit_date:
+          type: string
+          format: date
+        visitor_count:
+          type: integer
+          minimum: 1
+          maximum: 10
+        contact_phone:
+          type: string
+          maxLength: 30
+    ReservationStatus:
+      type: string
+      enum: [pending, confirmed, completed, cancelled]
