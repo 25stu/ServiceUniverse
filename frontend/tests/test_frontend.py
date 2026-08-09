@@ -28,3 +28,33 @@ def test_unknown_provider_returns_404() -> None:
     response = client.get("/providers/not-a-provider")
 
     assert response.status_code == 404
+
+
+def test_gas_fault_page_contains_role_entries() -> None:
+    response = client.get("/services/gas-fault")
+
+    assert response.status_code == 200
+    assert 'id="citizen-entry-form"' in response.text
+    assert 'id="admin-entry-button"' in response.text
+    assert "/static/css/gas-fault.css" in response.text
+    assert "/static/js/gas-fault.js" in response.text
+
+
+def test_gas_fault_user_workspace_contains_personal_reports() -> None:
+    response = client.get("/services/gas-fault/user")
+
+    assert response.status_code == 200
+    assert 'id="fault-report-form"' in response.text
+    assert 'id="user-report-list"' in response.text
+    assert 'id="status-update-form"' not in response.text
+    assert 'id="cancel-report-button"' in response.text
+
+
+def test_gas_fault_admin_workspace_contains_all_reports_and_update() -> None:
+    response = client.get("/services/gas-fault/admin")
+
+    assert response.status_code == 200
+    assert 'id="admin-report-list"' in response.text
+    assert 'id="status-update-form"' in response.text
+    assert 'id="cancel-report-button"' not in response.text
+    assert "Demonstration role" in response.text

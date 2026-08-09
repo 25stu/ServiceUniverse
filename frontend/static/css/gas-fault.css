@@ -1,0 +1,710 @@
+.gas-workspace {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(3rem, 7vw, 6rem) clamp(6rem, 10vw, 9rem);
+}
+
+.gas-role-workspace {
+  max-width: 80rem;
+}
+
+.gas-workspace-heading {
+  display: grid;
+  grid-template-columns: .7fr 1.3fr;
+  gap: 1rem 3rem;
+  margin-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.gas-workspace-heading .eyebrow {
+  grid-row: span 2;
+}
+
+.gas-workspace-heading h2,
+.gas-workspace-bar h2,
+.gas-records-heading h2,
+.gas-detail-heading h2,
+.gas-operations-heading h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 4.5vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.gas-workspace-heading > p:last-child,
+.gas-workspace-bar p:last-child {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.gas-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.gas-role-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 28rem;
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--blue);
+}
+
+.gas-role-card-admin {
+  border-color: var(--green);
+}
+
+.gas-role-number {
+  color: var(--blue);
+  font-family: var(--display);
+  font-size: 2rem;
+}
+
+.gas-role-card-admin .gas-role-number {
+  color: var(--green);
+}
+
+.gas-role-card h3 {
+  margin: .5rem 0 1rem;
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+
+.gas-role-card > p:not(.eyebrow) {
+  max-width: 34rem;
+  color: var(--ink-soft);
+}
+
+.gas-entry-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.gas-entry-form label {
+  display: grid;
+  gap: .4rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.gas-entry-form input {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: .9rem;
+  color: var(--ink);
+  background: rgb(255 255 255 / 32%);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.gas-entry-form button,
+.gas-role-link {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  padding: .9rem 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gas-role-link {
+  margin-top: auto;
+}
+
+.gas-role-card > small {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+}
+
+.gas-workspace-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.gas-workspace-bar h2 {
+  font-size: clamp(2.6rem, 5vw, 5rem);
+}
+
+.gas-workspace-bar a {
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.gas-alert {
+  display: grid;
+  grid-template-columns: minmax(7rem, .35fr) minmax(0, 1.65fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  border-block: 1px solid var(--red);
+}
+
+.gas-alert-number {
+  color: var(--red);
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: .8;
+}
+
+.gas-alert h2,
+.gas-card-heading h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.gas-alert p:last-child {
+  max-width: 50rem;
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+}
+
+.gas-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 5rem);
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.gas-dashboard-grid,
+.gas-admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, .9fr);
+  gap: clamp(3rem, 6vw, 6rem);
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.gas-admin-layout {
+  grid-template-columns: minmax(0, 1.4fr) minmax(16rem, .6fr);
+  align-items: start;
+  margin-top: 0;
+}
+
+.gas-action-card {
+  min-width: 0;
+}
+
+.gas-card-heading {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1.25rem;
+  min-height: 15rem;
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--blue);
+}
+
+.gas-records-panel {
+  min-width: 0;
+  padding-top: 1.5rem;
+  border-top: 3px solid var(--green);
+}
+
+.gas-records-heading,
+.gas-detail-heading {
+  display: flex;
+  gap: 2rem;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.gas-records-heading h2,
+.gas-detail-heading h2 {
+  font-size: clamp(2rem, 3.6vw, 3.5rem);
+}
+
+.gas-records-heading button,
+.gas-detail-heading button {
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  padding: .4rem 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: .75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gas-records-intro {
+  color: var(--ink-soft);
+}
+
+.gas-record-list {
+  margin-top: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.gas-record-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 1.2rem 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gas-record-item:hover,
+.gas-record-item[aria-current="true"] {
+  color: var(--blue);
+}
+
+.gas-record-item strong,
+.gas-record-item span,
+.gas-record-item small {
+  display: block;
+}
+
+.gas-record-item strong {
+  font-family: var(--display);
+  font-size: 1.35rem;
+}
+
+.gas-record-item small {
+  margin-top: .25rem;
+  color: var(--ink-soft);
+}
+
+.gas-record-status {
+  align-self: center;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.gas-empty-state {
+  padding: 2rem 0;
+  color: var(--ink-soft);
+}
+
+.gas-admin-guide {
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+}
+
+.gas-admin-guide ol {
+  margin: 1.5rem 0;
+  padding-left: 1.3rem;
+}
+
+.gas-admin-guide li {
+  padding: .35rem 0;
+}
+
+.gas-admin-guide > p:last-child {
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+
+.gas-card-heading > span {
+  color: var(--blue);
+  font-family: var(--display);
+  font-size: 1.7rem;
+}
+
+.gas-card-heading > div > p:last-child {
+  max-width: 32rem;
+  color: var(--ink-soft);
+}
+
+.gas-form,
+.gas-track-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.gas-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.gas-form label,
+.gas-track-form label {
+  display: grid;
+  gap: .45rem;
+  color: var(--ink);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.gas-form label small,
+.gas-track-form label small {
+  color: var(--ink-soft);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.gas-form input,
+.gas-form select,
+.gas-form textarea,
+.gas-track-form input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: .85rem .9rem;
+  color: var(--ink);
+  background: rgb(255 255 255 / 32%);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.gas-form textarea {
+  resize: vertical;
+}
+
+.gas-form input:focus,
+.gas-form select:focus,
+.gas-form textarea:focus,
+.gas-track-form input:focus {
+  border-color: var(--blue);
+  outline: 3px solid rgb(45 111 159 / 16%);
+  outline-offset: 0;
+}
+
+.gas-form-footer,
+.gas-track-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.gas-form-footer {
+  padding-top: .4rem;
+}
+
+.gas-form-footer p {
+  max-width: 25rem;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .8rem;
+}
+
+.gas-form button,
+.gas-track-form button {
+  display: inline-flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  padding: .75rem 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gas-form button:hover,
+.gas-track-form button:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
+.gas-form button:disabled,
+.gas-track-form button:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+.gas-message {
+  margin-top: 1.25rem;
+  border-left: 3px solid var(--green);
+  padding: .9rem 1rem;
+  background: rgb(61 117 99 / 8%);
+}
+
+.gas-message[data-state="error"] {
+  border-color: var(--red);
+  background: rgb(181 76 60 / 8%);
+}
+
+.gas-message strong,
+.gas-message span {
+  display: block;
+}
+
+.gas-message span {
+  margin-top: .2rem;
+  color: var(--ink-soft);
+  font-size: .85rem;
+}
+
+.gas-report {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--ink);
+  padding-top: 2rem;
+}
+
+.gas-detail-heading {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.gas-report-summary {
+  padding-block: 2rem;
+}
+
+.gas-report-summary h3 {
+  margin: 0;
+  color: var(--blue);
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.gas-report-summary > div > p:last-child {
+  margin: .4rem 0 0;
+  color: var(--ink-soft);
+  font-size: .8rem;
+}
+
+.gas-report-summary dl {
+  margin: 2rem 0 0;
+}
+
+.gas-report-summary dl div {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 1rem;
+  padding: .75rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.gas-report-summary dt {
+  color: var(--ink-soft);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.gas-report-summary dd {
+  margin: 0;
+}
+
+.gas-history {
+  padding: 2rem 0;
+  border-top: 1px solid var(--ink);
+}
+
+.gas-history ol {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gas-history li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.gas-history li::before {
+  position: absolute;
+  top: 1rem;
+  bottom: 0;
+  left: .34rem;
+  width: 1px;
+  background: var(--line);
+  content: "";
+}
+
+.gas-history li:last-child::before {
+  display: none;
+}
+
+.gas-history-marker {
+  position: relative;
+  z-index: 1;
+  width: .75rem;
+  height: .75rem;
+  margin-top: .28rem;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}
+
+.gas-history h4,
+.gas-history p {
+  margin: 0;
+}
+
+.gas-history h4 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.gas-history p {
+  color: var(--ink-soft);
+  font-size: .78rem;
+}
+
+.gas-operations {
+  border-block: 1px solid var(--ink);
+  padding: 1.2rem 0;
+}
+
+.gas-cancel-action {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--red);
+}
+
+.gas-cancel-action[hidden] {
+  display: none;
+}
+
+.gas-cancel-action h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+}
+
+.gas-cancel-action p:last-child {
+  margin: .5rem 0 0;
+  color: var(--ink-soft);
+}
+
+.gas-cancel-action button {
+  border: 1px solid var(--red);
+  padding: .85rem 1rem;
+  color: var(--red);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gas-cancel-action button:hover {
+  color: var(--paper);
+  background: var(--red);
+}
+
+.gas-cancel-action button:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+.gas-operations-heading {
+  margin-bottom: 1.5rem;
+}
+
+.gas-operations-heading h3 {
+  font-size: clamp(2rem, 3.6vw, 3.5rem);
+}
+
+.gas-operations summary {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gas-operations summary span {
+  color: var(--ink-soft);
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.gas-operations[open] summary {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .gas-actions,
+  .gas-dashboard-grid,
+  .gas-admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gas-card-heading {
+    min-height: auto;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .gas-alert,
+  .gas-field-grid,
+  .gas-form-footer,
+  .gas-track-form,
+  .gas-role-grid,
+  .gas-workspace-heading,
+  .gas-workspace-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .gas-cancel-action {
+    grid-template-columns: 1fr;
+  }
+
+  .gas-workspace-heading .eyebrow {
+    grid-row: auto;
+  }
+
+  .gas-role-card {
+    min-height: 25rem;
+  }
+
+  .gas-alert-number {
+    font-size: 3.5rem;
+  }
+
+  .gas-form button,
+  .gas-track-form button {
+    width: 100%;
+  }
+
+  .gas-operations summary {
+    display: grid;
+    gap: .3rem;
+  }
+}

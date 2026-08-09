@@ -104,3 +104,24 @@ async def service_page(request: Request, service_slug: str) -> HTMLResponse:
         name=f"services/{service_slug}.html",
         context=template_context(request, provider=provider, service=service),
     )
+
+
+@app.get("/services/gas-fault/{workspace}", response_class=HTMLResponse)
+async def gas_fault_workspace(request: Request, workspace: str) -> HTMLResponse:
+    if workspace not in {"user", "admin"}:
+        raise HTTPException(status_code=404, detail="Workspace not found")
+    catalog = load_catalog()
+    result = find_service(catalog, "gas-fault")
+    if result is None:
+        raise HTTPException(status_code=404, detail="Service not found")
+    provider, service = result
+    return templates.TemplateResponse(
+        request=request,
+        name=f"services/gas-fault-{workspace}.html",
+        context=template_context(
+            request,
+            provider=provider,
+            service=service,
+            workspace=workspace,
+        ),
+    )
