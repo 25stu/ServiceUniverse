@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "service": "parking-billing",
+  "source": "frozen-by-member-e-pending-member-c-review",
+  "lifecycle": "complete",
+  "activities": [
+    {
+      "name": "Register Parking Entry",
+      "meaning": "Create an active parking session when a vehicle enters."
+    },
+    {
+      "name": "Close Parking Session",
+      "meaning": "Record the vehicle exit and close the active session."
+    },
+    {
+      "name": "Calculate Parking Fee",
+      "meaning": "Calculate the payable amount from the recorded duration."
+    },
+    {
+      "name": "Initiate Payment",
+      "meaning": "Begin payment for an ended and unpaid session."
+    },
+    {
+      "name": "Confirm Payment",
+      "meaning": "Complete a valid payment and mark the session as paid."
+    },
+    {
+      "name": "Reject Payment",
+      "meaning": "Reject a payment attempt on an exceptional simulated path."
+    }
+  ],
+  "paths": {
+    "normal": [
+      "Register Parking Entry",
+      "Close Parking Session",
+      "Calculate Parking Fee",
+      "Initiate Payment",
+      "Confirm Payment"
+    ],
+    "payment_failure": [
+      "Register Parking Entry",
+      "Close Parking Session",
+      "Calculate Parking Fee",
+      "Initiate Payment",
+      "Reject Payment"
+    ],
+    "still_active": ["Register Parking Entry"]
+  }
+}

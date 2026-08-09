@@ -1,0 +1,10 @@
+{
+  "error": {
+    "code": "AVAILABILITY_EXCEEDS_CAPACITY",
+    "message": "Available spaces cannot exceed the parking lot capacity.",
+    "details": {
+      "total_spaces": 240,
+      "available_spaces": 241
+    }
+  }
+}

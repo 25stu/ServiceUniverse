@@ -1,0 +1,140 @@
+openapi: 3.1.0
+info:
+  title: Public Parking Availability Service
+  version: 0.1.0
+servers:
+  - url: http://localhost:8301
+paths:
+  /health:
+    get:
+      operationId: parkingAvailabilityHealth
+      responses:
+        "200":
+          description: Service is healthy.
+  /api/v1/parking-lots:
+    get:
+      operationId: listParkingLots
+      responses:
+        "200":
+          description: Current public parking availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ParkingLot"
+  /api/v1/parking-lots/{lot_id}:
+    parameters:
+      - $ref: "#/components/parameters/LotId"
+    get:
+      operationId: getParkingLot
+      responses:
+        "200":
+          description: Parking lot found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingLot"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/v1/parking-lots/{lot_id}/availability:
+    parameters:
+      - $ref: "#/components/parameters/LotId"
+    patch:
+      operationId: updateParkingLotAvailability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvailabilityUpdate"
+      responses:
+        "200":
+          description: Availability updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingLot"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Available spaces exceed total capacity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  parameters:
+    LotId:
+      name: lot_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: Parking lot was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ParkingLot:
+      type: object
+      required:
+        - lot_id
+        - name
+        - address
+        - total_spaces
+        - available_spaces
+        - accessible_spaces
+        - updated_at
+        - availability_status
+      properties:
+        lot_id:
+          type: string
+          example: LOT-CENTRAL-001
+        name:
+          type: string
+          example: Central Station Car Park
+        address:
+          type: string
+          example: 18 Railway Square
+        total_spaces:
+          type: integer
+          minimum: 1
+          example: 240
+        available_spaces:
+          type: integer
+          minimum: 0
+          example: 64
+        accessible_spaces:
+          type: integer
+          minimum: 0
+          example: 12
+        updated_at:
+          type: string
+          format: date-time
+        availability_status:
+          type: string
+          enum: [available, limited, full]
+    AvailabilityUpdate:
+      type: object
+      required: [available_spaces]
+      properties:
+        available_spaces:
+          type: integer
+          minimum: 0
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, details]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details: {}
