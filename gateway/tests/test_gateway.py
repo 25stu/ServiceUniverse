@@ -3,7 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from gateway.app import main
-from gateway.app.routers import water_billing
+from gateway.app.routers import gas_fault, water_billing
 
 client = TestClient(main.app)
 
@@ -113,3 +113,82 @@ def test_water_receipt_pdf_is_forwarded_as_a_download(
     assert response.headers["content-type"] == "application/pdf"
     assert response.headers["content-disposition"].endswith("RCT-1002-DEMO.pdf\"")
     assert response.content.startswith(b"%PDF-1.4")
+
+
+def test_gas_fault_gateway_wraps_downstream_response(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeAsyncClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def request(self, method, url, headers, content):
+            assert method == "POST"
+            assert url.endswith("/api/v1/fault-reports")
+            assert headers["X-Request-ID"] == "gateway-test-id"
+            assert headers["X-Citizen-ID"] == "CITIZEN-001"
+            assert content
+            request = httpx.Request(method, url)
+            return httpx.Response(
+                201,
+                request=request,
+                json={"report_id": "FAULT-A1B2C3D4", "status": "reported"},
+            )
+
+    monkeypatch.setattr(
+        gas_fault.httpx,
+        "AsyncClient",
+        lambda **_kwargs: FakeAsyncClient(),
+    )
+    response = client.post(
+        "/api/v1/fault-reports",
+        headers={
+            "X-Request-ID": "gateway-test-id",
+            "X-Citizen-ID": "CITIZEN-001",
+        },
+        json={"description": "A valid downstream request body."},
+    )
+
+    payload = response.json()
+    assert response.status_code == 201
+    assert payload["success"] is True
+    assert payload["data"]["report_id"] == "FAULT-A1B2C3D4"
+    assert payload["meta"]["request_id"] == "gateway-test-id"
+
+
+def test_gas_fault_gateway_preserves_domain_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeAsyncClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def request(self, method, url, headers, content):
+            request = httpx.Request(method, url)
+            return httpx.Response(
+                404,
+                request=request,
+                json={
+                    "error": {
+                        "code": "FAULT_REPORT_NOT_FOUND",
+                        "message": "The requested fault report was not found.",
+                        "details": None,
+                    }
+                },
+            )
+
+    monkeypatch.setattr(
+        gas_fault.httpx,
+        "AsyncClient",
+        lambda **_kwargs: FakeAsyncClient(),
+    )
+    response = client.get("/api/v1/fault-reports/FAULT-UNKNOWN")
+
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "FAULT_REPORT_NOT_FOUND"

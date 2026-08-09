@@ -1,0 +1,245 @@
+openapi: 3.1.0
+info:
+  title: Gas Fault Reporting and Repair Tracking API
+  version: 0.1.0
+servers:
+  - url: http://localhost:8102
+paths:
+  /api/v1/fault-reports:
+    get:
+      summary: List the current citizen's reports or all reports for an operator
+      operationId: listFaultReports
+      parameters:
+        - name: X-Citizen-ID
+          in: header
+          required: false
+          schema: {type: string}
+        - name: X-User-Role
+          in: header
+          required: false
+          schema: {type: string, enum: [gas_operator, gas_admin]}
+      responses:
+        '200':
+          description: Accessible fault reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/FaultReport'}
+        '401': {$ref: '#/components/responses/IdentityError'}
+    post:
+      summary: Submit a gas fault report
+      operationId: createFaultReport
+      parameters:
+        - $ref: '#/components/parameters/CitizenIdentity'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaultReportCreate'
+      responses:
+        '201':
+          description: Fault report created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaultReport'
+        '401': {$ref: '#/components/responses/IdentityError'}
+        '403': {$ref: '#/components/responses/AccessError'}
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/fault-reports/{report_id}:
+    parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - name: X-Citizen-ID
+        in: header
+        required: false
+        schema: {type: string}
+      - name: X-User-Role
+        in: header
+        required: false
+        schema: {type: string, enum: [gas_operator, gas_admin]}
+    get:
+      summary: Retrieve a fault report and its repair history
+      operationId: getFaultReport
+      responses:
+        '200':
+          description: Fault report retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaultReport'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '401': {$ref: '#/components/responses/IdentityError'}
+        '403': {$ref: '#/components/responses/AccessError'}
+  /api/v1/fault-reports/{report_id}/status:
+    parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/AdministratorRole'
+    patch:
+      summary: Move a repair case to a legal next status
+      operationId: updateFaultStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaultStatusUpdate'
+      responses:
+        '200':
+          description: Repair status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaultReport'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '401': {$ref: '#/components/responses/IdentityError'}
+        '403': {$ref: '#/components/responses/AccessError'}
+        '409':
+          $ref: '#/components/responses/TransitionError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/fault-reports/{report_id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/CitizenIdentity'
+    post:
+      summary: Cancel the current citizen's active fault report
+      operationId: cancelFaultReport
+      responses:
+        '200':
+          description: Fault report cancelled and timeline event added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaultReport'
+        '401': {$ref: '#/components/responses/IdentityError'}
+        '403': {$ref: '#/components/responses/AccessError'}
+        '404': {$ref: '#/components/responses/NotFoundError'}
+        '409':
+          description: The report is already resolved, closed, or cancelled
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorBody'}
+components:
+  parameters:
+    CitizenIdentity:
+      name: X-Citizen-ID
+      in: header
+      required: true
+      description: Demonstration citizen identity; must match the request citizen_id.
+      schema: {type: string, minLength: 3, maxLength: 64}
+    AdministratorRole:
+      name: X-User-Role
+      in: header
+      required: true
+      description: Demonstration operator role. This is not production authentication.
+      schema: {type: string, enum: [gas_operator, gas_admin]}
+    ReportId:
+      name: report_id
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^FAULT-[A-F0-9]{8}$'
+  schemas:
+    Severity:
+      type: string
+      enum: [low, medium, high, critical]
+    FaultStatus:
+      type: string
+      enum:
+        - reported
+        - assigned
+        - inspection_in_progress
+        - repair_in_progress
+        - resolved
+        - closed
+        - cancelled
+    FaultReportCreate:
+      type: object
+      additionalProperties: false
+      required:
+        - citizen_id
+        - reporter_name
+        - contact_phone
+        - address
+        - description
+        - severity
+      properties:
+        citizen_id: {type: string, minLength: 3, maxLength: 64}
+        reporter_name: {type: string, minLength: 2, maxLength: 100}
+        contact_phone: {type: string, minLength: 7, maxLength: 24}
+        address: {type: string, minLength: 5, maxLength: 200}
+        description: {type: string, minLength: 10, maxLength: 1000}
+        severity: {$ref: '#/components/schemas/Severity'}
+    FaultStatusUpdate:
+      type: object
+      additionalProperties: false
+      required: [status, resource]
+      properties:
+        status: {$ref: '#/components/schemas/FaultStatus'}
+        resource: {type: string, minLength: 2, maxLength: 100}
+        note: {type: [string, 'null'], maxLength: 500}
+    FaultStatusHistory:
+      type: object
+      required: [status, activity, resource, timestamp]
+      properties:
+        status: {$ref: '#/components/schemas/FaultStatus'}
+        activity: {type: string}
+        resource: {type: string}
+        note: {type: [string, 'null']}
+        timestamp: {type: string, format: date-time}
+    FaultReport:
+      allOf:
+        - $ref: '#/components/schemas/FaultReportCreate'
+        - type: object
+          required: [report_id, status, created_at, updated_at, history]
+          properties:
+            report_id: {type: string}
+            status: {$ref: '#/components/schemas/FaultStatus'}
+            created_at: {type: string, format: date-time}
+            updated_at: {type: string, format: date-time}
+            history:
+              type: array
+              items: {$ref: '#/components/schemas/FaultStatusHistory'}
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: {type: string}
+            message: {type: string}
+            details: {}
+  responses:
+    IdentityError:
+      description: A demonstration actor identity was not supplied
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+    AccessError:
+      description: The actor cannot access or modify this fault report
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+    NotFoundError:
+      description: Fault report not found
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+    TransitionError:
+      description: Illegal repair status transition
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+    ValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
