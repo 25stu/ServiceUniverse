@@ -46,7 +46,12 @@ app.add_middleware(
     allow_origins=FRONTEND_ORIGINS,
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "X-Request-ID"],
+    allow_headers=[
+        "Content-Type",
+        "X-Request-ID",
+        "X-Citizen-ID",
+        "X-User-Role",
+    ],
     expose_headers=["X-Request-ID"],
 )
 app.include_router(water_billing.router)
