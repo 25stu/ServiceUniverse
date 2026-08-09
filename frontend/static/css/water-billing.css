@@ -1,0 +1,530 @@
+.water-workspace {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--ink);
+}
+
+/* The shared service template's integration instructions are only a scaffold. */
+.integration-panel,
+.developer-note {
+  display: none;
+}
+
+.water-workspace-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, .7fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: end;
+}
+
+.water-workspace h2,
+.water-receipt h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4vw, 4.1rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.water-workspace-heading > div > p:last-child,
+.water-message,
+.water-bill-meta,
+.water-receipt dd {
+  color: var(--ink-soft);
+}
+
+.water-lookup label {
+  display: block;
+  margin-bottom: .5rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.water-lookup > div {
+  display: flex;
+  gap: .65rem;
+}
+
+.water-lookup input,
+.water-lookup button,
+.water-bill-action {
+  min-height: 2.9rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  font: inherit;
+}
+
+.water-lookup input {
+  width: 100%;
+  padding: .65rem .75rem;
+  color: var(--ink);
+  background: transparent;
+}
+
+.water-lookup button,
+.water-bill-action {
+  padding: .65rem 1rem;
+  color: var(--paper);
+  background: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.water-bill-link {
+  display: inline-block;
+  min-height: 2.9rem;
+  box-sizing: border-box;
+  padding: .65rem 1rem;
+  border: 1px solid var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.water-lookup button:hover,
+.water-bill-action:hover:not(:disabled),
+.water-bill-link:hover {
+  color: var(--ink);
+  background: var(--yellow);
+}
+
+.water-message {
+  margin: 2rem 0 1rem;
+}
+
+.water-message[data-state="error"] {
+  color: #9f3124;
+  font-weight: 700;
+}
+
+.water-bills {
+  display: grid;
+  gap: 1rem;
+}
+
+.water-bill {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.water-bill:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.water-bill h3 {
+  margin: 0 0 .35rem;
+  font-family: var(--display);
+  font-size: 1.55rem;
+  font-weight: 400;
+}
+
+.water-bill-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1rem;
+  margin: 0;
+  font-size: .88rem;
+}
+
+.water-bill-amount {
+  margin: 0 0 .85rem;
+  font-size: 1.28rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.water-bill-status {
+  display: inline-block;
+  margin-bottom: .75rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.water-bill-action:disabled {
+  border-color: var(--line);
+  color: var(--ink-soft);
+  background: var(--paper-deep);
+  cursor: not-allowed;
+}
+
+.water-receipt {
+  max-width: 42rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid var(--green);
+}
+
+.water-receipt h3 {
+  font-size: 2rem;
+}
+
+.water-receipt dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .65rem 1.5rem;
+  margin: 1.5rem 0 0;
+}
+
+.water-receipt dt {
+  font-weight: 700;
+}
+
+.water-receipt dd {
+  margin: 0;
+}
+
+.water-back-link {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.water-detail-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+
+.water-detail-card {
+  max-width: 42rem;
+  padding: 1.5rem;
+  border: 1px solid var(--ink);
+}
+
+.water-detail-description {
+  margin: 0 0 .35rem;
+  font-family: var(--display);
+  font-size: 2rem;
+}
+
+.water-detail-card dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .65rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.water-detail-card dt {
+  font-weight: 700;
+}
+
+.water-detail-card dd {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.water-receipt-page {
+  margin-top: 0;
+}
+
+.water-download-link {
+  margin-top: 1.5rem;
+}
+
+.water-document {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: 2.25rem clamp(5rem, 9vw, 8rem);
+}
+
+.water-document-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  color: var(--ink-soft);
+  font-size: .8rem;
+}
+
+.water-document-breadcrumb a {
+  text-decoration: none;
+}
+
+.water-document-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: end;
+  margin-top: clamp(3rem, 7vw, 6rem);
+  padding-bottom: 2.4rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.water-document-header h1 {
+  max-width: none;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(3.1rem, 6vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -.05em;
+  line-height: .92;
+}
+
+.water-document-subtitle {
+  max-width: 34rem;
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+}
+
+.water-document-reference {
+  min-width: 13rem;
+  margin: 0;
+  padding-block: 1rem;
+  border-block: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+
+.water-document-reference strong {
+  display: inline-block;
+  margin-top: .25rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.water-document-message {
+  margin: 1.4rem 0 0;
+  color: var(--ink-soft);
+}
+
+.water-document-message[data-state="error"] {
+  color: #9f3124;
+  font-weight: 700;
+}
+
+.water-document-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, .28fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.water-document-aside {
+  margin-top: .25rem;
+  padding: 1.2rem 0;
+  border-block: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: .9rem;
+}
+
+.water-document-aside p:last-of-type {
+  margin-bottom: 1.25rem;
+}
+
+.water-document-aside a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.water-statement {
+  min-width: 0;
+  border-top: 1px solid var(--line);
+}
+
+.water-statement-summary,
+.water-statement-section {
+  padding-block: 1.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.water-statement-customer {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 2rem;
+}
+
+.water-statement-address {
+  margin: .3rem 0 1.45rem;
+  color: var(--ink-soft);
+}
+
+.water-statement-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.35rem 2rem;
+  margin: 0;
+}
+
+.water-statement-facts dt,
+.water-receipt-document dt {
+  margin-bottom: .35rem;
+  color: var(--ink-soft);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.water-statement-facts dd,
+.water-receipt-document dd {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.water-statement-section h2 {
+  margin: 0 0 1.35rem;
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.water-charge-table {
+  border-top: 1px solid var(--line);
+}
+
+.water-charge-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: .8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.water-charge-total {
+  padding-block: 1.05rem;
+  color: var(--ink);
+  font-size: 1.12rem;
+}
+
+.water-payment-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1.4rem;
+  border: 2px solid var(--ink);
+}
+
+.water-payment-status {
+  flex: 1 1 16rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.water-primary-action,
+.water-secondary-action,
+.water-download-link {
+  display: inline-block;
+  padding: .8rem 1rem;
+  border: 1px solid var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.water-primary-action:hover:not(:disabled),
+.water-secondary-action:hover,
+.water-download-link:hover {
+  color: var(--ink);
+  background: var(--yellow);
+}
+
+.water-primary-action:disabled {
+  color: var(--ink-soft);
+  border-color: var(--line);
+  background: var(--paper-deep);
+  cursor: not-allowed;
+}
+
+.water-paid-mark {
+  min-width: 7rem;
+  padding: .65rem 1rem;
+  border-radius: 999px;
+  color: var(--paper);
+  background: var(--green);
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.water-receipt-document {
+  min-width: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 2px solid var(--green);
+}
+
+.water-receipt-amount {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.water-receipt-amount p {
+  margin: 0 0 .35rem;
+  color: var(--ink-soft);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.water-receipt-amount strong {
+  font-family: var(--display);
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.water-receipt-document dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 1rem 3rem;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .water-workspace-heading,
+  .water-bill {
+    grid-template-columns: 1fr;
+  }
+
+  .water-bill-amount {
+    text-align: left;
+  }
+
+  .water-detail-heading {
+    display: block;
+  }
+
+  .water-document-header,
+  .water-document-grid,
+  .water-statement-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .water-document-reference {
+    min-width: 0;
+  }
+
+  .water-document-aside {
+    margin-top: 0;
+  }
+
+  .water-receipt-document dl {
+    grid-template-columns: 1fr;
+    gap: .25rem;
+  }
+
+  .water-receipt-document dd {
+    margin-bottom: 1rem;
+  }
+}
