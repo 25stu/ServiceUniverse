@@ -1,3 +1,37 @@
 {% extends "service.html" %}
 
-{# Owner A: override service_body or replace this file when the contract is ready. #}
+{% block extra_head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/water-billing.css') }}">
+  <script src="{{ url_for('static', path='/js/water-billing.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+  <section class="water-workspace" aria-labelledby="water-workspace-title" data-water-billing>
+    <div class="water-workspace-heading">
+      <div>
+        <p class="eyebrow">Water account</p>
+        <h2 id="water-workspace-title">Review and pay a water bill</h2>
+        <p>Enter a citizen ID to load the available demonstration bills.</p>
+      </div>
+      <form class="water-lookup" data-water-bill-form>
+        <label for="citizen-id">Citizen ID</label>
+        <div>
+          <input id="citizen-id" name="citizen_id" value="CITIZEN-2001" required maxlength="64">
+          <button type="submit">Find bills</button>
+        </div>
+      </form>
+    </div>
+
+    <p class="water-message" data-water-message role="status" aria-live="polite">
+      Enter a citizen ID to retrieve bills.
+    </p>
+    <div class="water-bills" data-water-bills aria-live="polite"></div>
+    <section class="water-receipt" data-water-receipt hidden aria-labelledby="receipt-title">
+      <p class="eyebrow">Payment receipt</p>
+      <h3 id="receipt-title">Payment completed</h3>
+      <dl data-water-receipt-details></dl>
+    </section>
+  </section>
+{% endblock %}

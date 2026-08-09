@@ -1,0 +1,219 @@
+openapi: 3.1.0
+info:
+  title: Water Billing and Payment Service
+  version: 0.1.0
+  description: Retrieve municipal water bills and pay an eligible unpaid bill.
+paths:
+  /api/v1/bills:
+    get:
+      summary: List a citizen's water bills
+      parameters:
+        - $ref: '#/components/parameters/CitizenId'
+      responses:
+        '200':
+          description: Bills retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bill'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/bills/{bill_id}:
+    get:
+      summary: Retrieve one water bill
+      parameters:
+        - $ref: '#/components/parameters/BillId'
+      responses:
+        '200':
+          description: Bill retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillDetail'
+        '404':
+          $ref: '#/components/responses/BillNotFound'
+  /api/v1/bills/{bill_id}/receipt:
+    get:
+      summary: Retrieve the receipt for a paid water bill
+      parameters:
+        - $ref: '#/components/parameters/BillId'
+      responses:
+        '200':
+          description: Payment receipt retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReceipt'
+        '404':
+          $ref: '#/components/responses/ReceiptNotFound'
+  /api/v1/bills/{bill_id}/receipt.pdf:
+    get:
+      summary: Download the receipt for a paid water bill as a PDF
+      parameters:
+        - $ref: '#/components/parameters/BillId'
+      responses:
+        '200':
+          description: PDF receipt download.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/ReceiptNotFound'
+  /api/v1/payments:
+    post:
+      summary: Pay an eligible unpaid bill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+      responses:
+        '201':
+          description: Payment completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReceipt'
+        '404':
+          $ref: '#/components/responses/BillNotFound'
+        '409':
+          $ref: '#/components/responses/BillAlreadyPaid'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/payments/{payment_id}:
+    get:
+      summary: Retrieve a payment receipt
+      parameters:
+        - $ref: '#/components/parameters/PaymentId'
+      responses:
+        '200':
+          description: Payment receipt retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReceipt'
+        '404':
+          description: Payment receipt not found.
+components:
+  parameters:
+    CitizenId:
+      name: citizen_id
+      in: query
+      required: true
+      schema:
+        type: string
+        minLength: 1
+      example: CITIZEN-1001
+    BillId:
+      name: bill_id
+      in: path
+      required: true
+      schema:
+        type: string
+      example: BILL-1001
+    PaymentId:
+      name: payment_id
+      in: path
+      required: true
+      schema:
+        type: string
+      example: PAY-7D3A9C104B2E
+  schemas:
+    Bill:
+      type: object
+      required: [bill_id, citizen_id, amount_minor, currency, status, due_on]
+      properties:
+        bill_id: { type: string, example: BILL-1001 }
+        citizen_id: { type: string, example: CITIZEN-1001 }
+        account_reference: { type: string, example: WATER-2048 }
+        description: { type: string, example: Quarterly water usage }
+        issued_on: { type: string, format: date }
+        due_on: { type: string, format: date }
+        amount_minor: { type: integer, example: 12650 }
+        currency: { type: string, example: AUD }
+        status: { type: string, enum: [unpaid, paid] }
+        paid_at: { type: [string, 'null'], format: date-time }
+    BillDetail:
+      allOf:
+        - $ref: '#/components/schemas/Bill'
+        - type: object
+          required:
+            - customer_name
+            - service_address
+            - meter_number
+            - billing_period_start
+            - billing_period_end
+            - previous_meter_reading
+            - current_meter_reading
+            - water_usage_kl
+            - fixed_charge_minor
+            - consumption_charge_minor
+            - gst_minor
+          properties:
+            customer_name: { type: string, example: Alex Morgan }
+            service_address: { type: string, example: 14 Harbour Street, Sydney NSW 2000 }
+            meter_number: { type: string, example: WTR-2048-77 }
+            billing_period_start: { type: string, format: date }
+            billing_period_end: { type: string, format: date }
+            previous_meter_reading: { type: integer, example: 18420 }
+            current_meter_reading: { type: integer, example: 18572 }
+            water_usage_kl: { type: integer, example: 152 }
+            fixed_charge_minor: { type: integer, example: 2800 }
+            consumption_charge_minor: { type: integer, example: 8723 }
+            gst_minor: { type: integer, example: 1127 }
+    PaymentCreate:
+      type: object
+      required: [bill_id, payment_method]
+      properties:
+        bill_id: { type: string, example: BILL-1001 }
+        payment_method: { type: string, enum: [card, bank_transfer] }
+    PaymentReceipt:
+      type: object
+      required: [payment_id, bill_id, amount_minor, currency, status, paid_at, receipt_number]
+      properties:
+        payment_id: { type: string, example: PAY-7D3A9C104B2E }
+        bill_id: { type: string, example: BILL-1001 }
+        citizen_id: { type: string, example: CITIZEN-1001 }
+        amount_minor: { type: integer, example: 12650 }
+        currency: { type: string, example: AUD }
+        payment_method: { type: string, enum: [card, bank_transfer] }
+        status: { type: string, enum: [completed] }
+        paid_at: { type: string, format: date-time }
+        receipt_number: { type: string, example: RCT-A2E4D11B445C }
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+  responses:
+    BillNotFound:
+      description: The requested bill was not found.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: BILL_NOT_FOUND, message: The requested bill was not found. }
+    BillAlreadyPaid:
+      description: The bill cannot be paid again.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: BILL_ALREADY_PAID, message: This bill has already been paid and cannot be paid again. }
+    ReceiptNotFound:
+      description: There is no completed payment receipt for the bill.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: RECEIPT_NOT_FOUND, message: No payment receipt is available for this bill. }
+    ValidationError:
+      description: The request format is invalid.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: VALIDATION_ERROR, message: The request did not satisfy the required format. }

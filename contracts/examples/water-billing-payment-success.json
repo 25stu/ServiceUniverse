@@ -1,0 +1,11 @@
+{
+  "payment_id": "PAY-7D3A9C104B2E",
+  "bill_id": "BILL-1001",
+  "citizen_id": "CITIZEN-1001",
+  "amount_minor": 12650,
+  "currency": "AUD",
+  "payment_method": "card",
+  "status": "completed",
+  "paid_at": "2026-08-07T10:00:00Z",
+  "receipt_number": "RCT-A2E4D11B445C"
+}
