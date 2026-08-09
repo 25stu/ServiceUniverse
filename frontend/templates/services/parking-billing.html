@@ -1,3 +1,69 @@
-{% extends "service.html" %}
+{% extends "base.html" %}
 
-{# Owner E: override service_body or replace this file when the contract is ready. #}
+{% block title %}{{ service.name }} — ServiceUniverse{% endblock %}
+
+{% block extra_head %}
+  <style>
+    .billing-workspace { width: var(--page); margin: 0 auto; padding: 4rem 0 7rem; }
+    .billing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 6rem); }
+    .billing-panel { padding-top: 1.4rem; border-top: 3px solid var(--green); }
+    .billing-panel h2 { margin: 0 0 1.5rem; font-family: var(--display); font-size: 2.5rem; font-weight: 400; }
+    .billing-form { display: grid; gap: 1rem; }
+    .billing-form label { display: grid; gap: .35rem; color: var(--ink-soft); font-size: .86rem; font-weight: 700; }
+    .billing-form input, .billing-form select { width: 100%; padding: .75rem; border: 1px solid var(--ink); background: var(--paper); }
+    .billing-form button, .billing-actions button { padding: .78rem 1rem; border: 1px solid var(--ink); color: var(--paper); background: var(--ink); cursor: pointer; }
+    .billing-result { min-height: 15rem; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--line); }
+    .billing-result dl { display: grid; grid-template-columns: auto 1fr; gap: .45rem 1rem; }
+    .billing-result dt { color: var(--ink-soft); }
+    .billing-result dd { margin: 0; overflow-wrap: anywhere; font-weight: 700; }
+    .billing-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+    .billing-message { min-height: 1.5rem; color: var(--ink-soft); }
+    .billing-message[data-state="error"] { color: var(--red); }
+    @media (max-width: 800px) { .billing-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="{{ url_for('static', path='/js/parking-billing.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a><span aria-hidden="true">/</span>
+      <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a><span aria-hidden="true">/</span>
+      <span>{{ service.name }}</span>
+    </nav>
+    <div class="service-title-grid">
+      <div><p class="eyebrow">PM / Session and payment</p><h1>{{ service.name }}</h1></div>
+      <div class="service-readiness"><span class="status-dot" aria-hidden="true"></span><div><p data-service-status>Checking service</p><small>AUD 4.00 per started hour</small></div></div>
+    </div>
+    <p class="service-lede">Start or retrieve a parking session, calculate the charge when parking ends, and settle an eligible fee securely.</p>
+  </section>
+
+  <section class="billing-workspace">
+    <p class="billing-message" role="status" aria-live="polite" data-billing-message>Ready.</p>
+    <div class="billing-grid">
+      <section class="billing-panel" aria-labelledby="start-session-heading">
+        <p class="eyebrow">New visit</p><h2 id="start-session-heading">Start a session</h2>
+        <form class="billing-form" data-create-session>
+          <label>Citizen ID<input name="citizen_id" value="CITIZEN-001" maxlength="80" required></label>
+          <label>Vehicle plate<input name="vehicle_plate" value="ABC 123" maxlength="12" required></label>
+          <label>Parking lot
+            <select name="parking_lot_id">
+              <option value="LOT-CENTRAL-001">Central Station Car Park</option>
+              <option value="LOT-HARBOUR-002">Harbour Public Parking</option>
+              <option value="LOT-LIBRARY-003">Civic Library Car Park</option>
+            </select>
+          </label>
+          <button type="submit">Start parking session</button>
+        </form>
+      </section>
+      <section class="billing-panel" aria-labelledby="find-session-heading">
+        <p class="eyebrow">Existing visit</p><h2 id="find-session-heading">Find a session</h2>
+        <form class="billing-form" data-find-session>
+          <label>Session ID<input name="session_id" placeholder="Paste a session ID" required></label>
+          <button type="submit">Find session</button>
+        </form>
+        <div class="billing-result" data-billing-result><p>No session selected.</p></div>
+      </section>
+    </div>
+  </section>
+{% endblock %}
