@@ -1,3 +1,48 @@
-{% extends "service.html" %}
+{% extends "base.html" %}
 
-{# Owner E: override service_body or replace this file when the contract is ready. #}
+{% block title %}{{ service.name }} — ServiceUniverse{% endblock %}
+
+{% block extra_head %}
+  <style>
+    .parking-workspace { width: var(--page); margin: 0 auto; padding: 4rem 0 7rem; }
+    .parking-toolbar { display: flex; gap: 1rem; justify-content: space-between; align-items: end; margin-bottom: 2rem; }
+    .parking-toolbar h2 { margin: 0; font-family: var(--display); font-size: clamp(2.3rem, 4vw, 4rem); font-weight: 400; }
+    .parking-lots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+    .parking-card { padding: 1.5rem; border-top: 3px solid var(--green); background: rgb(255 255 255 / 24%); }
+    .parking-card h3 { min-height: 3.6rem; margin: .4rem 0; font-family: var(--display); font-size: 1.55rem; }
+    .parking-card address { min-height: 3rem; color: var(--ink-soft); font-style: normal; }
+    .space-count { margin: 2rem 0 .25rem; font-family: var(--display); font-size: 3.8rem; line-height: 1; }
+    .space-label { margin: 0 0 1.5rem; color: var(--ink-soft); }
+    .availability-form { display: flex; gap: .6rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+    .availability-form input { min-width: 0; width: 100%; padding: .65rem; border: 1px solid var(--ink); background: var(--paper); }
+    .availability-form button, .parking-toolbar button { padding: .68rem 1rem; border: 1px solid var(--ink); color: var(--paper); background: var(--ink); cursor: pointer; }
+    .parking-message { min-height: 1.5rem; color: var(--ink-soft); }
+    .parking-message[data-state="error"] { color: var(--red); }
+    @media (max-width: 900px) { .parking-lots { grid-template-columns: 1fr; } }
+  </style>
+  <script src="{{ url_for('static', path='/js/parking-availability.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a><span aria-hidden="true">/</span>
+      <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a><span aria-hidden="true">/</span>
+      <span>{{ service.name }}</span>
+    </nav>
+    <div class="service-title-grid">
+      <div><p class="eyebrow">PM / Live parking guide</p><h1>{{ service.name }}</h1></div>
+      <div class="service-readiness"><span class="status-dot" aria-hidden="true"></span><div><p data-service-status>Checking service</p><small>Updated on demand</small></div></div>
+    </div>
+    <p class="service-lede">Compare capacity before you travel. Availability is supplied by the City Parking Management Center through the platform Gateway.</p>
+  </section>
+
+  <section class="parking-workspace" aria-labelledby="parking-lots-heading">
+    <div class="parking-toolbar">
+      <div><p class="eyebrow">Current capacity</p><h2 id="parking-lots-heading">Public parking lots</h2></div>
+      <button type="button" data-refresh-parking>Refresh</button>
+    </div>
+    <p class="parking-message" role="status" aria-live="polite" data-parking-message>Loading parking availability…</p>
+    <div class="parking-lots" data-parking-lots></div>
+  </section>
+{% endblock %}

@@ -1,0 +1,139 @@
+case_id,activity,timestamp,resource,lifecycle,outcome,service,citizen_id,cost_minor,duration_seconds,status,source,parking_lot_id,vehicle_plate
+PARK-0001,Register Parking Entry,2026-08-01T07:37:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,,in_progress,simulated,LOT-CENTRAL-001,SU 0001
+PARK-0001,Close Parking Session,2026-08-01T13:22:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,20700,in_progress,simulated,LOT-CENTRAL-001,SU 0001
+PARK-0001,Calculate Parking Fee,2026-08-01T13:22:05Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2400,20700,in_progress,simulated,LOT-CENTRAL-001,SU 0001
+PARK-0001,Initiate Payment,2026-08-01T13:22:08Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2400,,in_progress,simulated,LOT-CENTRAL-001,SU 0001
+PARK-0001,Confirm Payment,2026-08-01T13:22:12Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2400,,paid,simulated,LOT-CENTRAL-001,SU 0001
+PARK-0002,Register Parking Entry,2026-08-01T08:14:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,,in_progress,simulated,LOT-HARBOUR-002,SU 0002
+PARK-0002,Close Parking Session,2026-08-01T10:12:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,7080,in_progress,simulated,LOT-HARBOUR-002,SU 0002
+PARK-0002,Calculate Parking Fee,2026-08-01T10:12:10Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,800,7080,in_progress,simulated,LOT-HARBOUR-002,SU 0002
+PARK-0002,Initiate Payment,2026-08-01T10:12:23Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,800,,in_progress,simulated,LOT-HARBOUR-002,SU 0002
+PARK-0002,Confirm Payment,2026-08-01T10:12:36Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,800,,paid,simulated,LOT-HARBOUR-002,SU 0002
+PARK-0003,Register Parking Entry,2026-08-01T08:51:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,,in_progress,simulated,LOT-LIBRARY-003,SU 0003
+PARK-0003,Close Parking Session,2026-08-01T09:20:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,1740,in_progress,simulated,LOT-LIBRARY-003,SU 0003
+PARK-0003,Calculate Parking Fee,2026-08-01T09:20:01Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,400,1740,in_progress,simulated,LOT-LIBRARY-003,SU 0003
+PARK-0003,Initiate Payment,2026-08-01T09:20:13Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,400,,in_progress,simulated,LOT-LIBRARY-003,SU 0003
+PARK-0003,Confirm Payment,2026-08-01T09:20:20Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,400,,paid,simulated,LOT-LIBRARY-003,SU 0003
+PARK-0004,Register Parking Entry,2026-08-01T09:28:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,,in_progress,simulated,LOT-CENTRAL-001,SU 0004
+PARK-0004,Close Parking Session,2026-08-01T11:34:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,7560,in_progress,simulated,LOT-CENTRAL-001,SU 0004
+PARK-0004,Calculate Parking Fee,2026-08-01T11:34:08Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,1200,7560,in_progress,simulated,LOT-CENTRAL-001,SU 0004
+PARK-0004,Initiate Payment,2026-08-01T11:34:22Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,1200,,in_progress,simulated,LOT-CENTRAL-001,SU 0004
+PARK-0004,Confirm Payment,2026-08-01T11:34:36Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,1200,,paid,simulated,LOT-CENTRAL-001,SU 0004
+PARK-0005,Register Parking Entry,2026-08-01T10:05:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,,in_progress,simulated,LOT-HARBOUR-002,SU 0005
+PARK-0005,Close Parking Session,2026-08-01T12:26:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,8460,in_progress,simulated,LOT-HARBOUR-002,SU 0005
+PARK-0005,Calculate Parking Fee,2026-08-01T12:26:18Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,1200,8460,in_progress,simulated,LOT-HARBOUR-002,SU 0005
+PARK-0005,Initiate Payment,2026-08-01T12:26:26Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,1200,,in_progress,simulated,LOT-HARBOUR-002,SU 0005
+PARK-0005,Confirm Payment,2026-08-01T12:26:42Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,1200,,paid,simulated,LOT-HARBOUR-002,SU 0005
+PARK-0006,Register Parking Entry,2026-08-01T10:42:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,,,in_progress,simulated,LOT-LIBRARY-003,SU 0006
+PARK-0006,Close Parking Session,2026-08-01T11:51:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,,4140,in_progress,simulated,LOT-LIBRARY-003,SU 0006
+PARK-0006,Calculate Parking Fee,2026-08-01T11:51:01Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,800,4140,in_progress,simulated,LOT-LIBRARY-003,SU 0006
+PARK-0006,Initiate Payment,2026-08-01T11:51:19Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,800,,in_progress,simulated,LOT-LIBRARY-003,SU 0006
+PARK-0006,Confirm Payment,2026-08-01T11:51:37Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,800,,paid,simulated,LOT-LIBRARY-003,SU 0006
+PARK-0007,Register Parking Entry,2026-08-01T11:19:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,,,in_progress,simulated,LOT-CENTRAL-001,SU 0007
+PARK-0007,Close Parking Session,2026-08-01T11:56:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,,2220,in_progress,simulated,LOT-CENTRAL-001,SU 0007
+PARK-0007,Calculate Parking Fee,2026-08-01T11:56:06Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,400,2220,in_progress,simulated,LOT-CENTRAL-001,SU 0007
+PARK-0007,Initiate Payment,2026-08-01T11:56:11Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,400,,in_progress,simulated,LOT-CENTRAL-001,SU 0007
+PARK-0007,Reject Payment,2026-08-01T11:56:17Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-007,400,,payment_failed,simulated,LOT-CENTRAL-001,SU 0007
+PARK-0008,Register Parking Entry,2026-08-01T11:56:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-008,,,in_progress,simulated,LOT-HARBOUR-002,SU 0008
+PARK-0008,Close Parking Session,2026-08-01T12:36:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-008,,2400,in_progress,simulated,LOT-HARBOUR-002,SU 0008
+PARK-0008,Calculate Parking Fee,2026-08-01T12:36:10Z,parking-billing-service,complete,success,parking-billing,CITIZEN-008,400,2400,in_progress,simulated,LOT-HARBOUR-002,SU 0008
+PARK-0008,Initiate Payment,2026-08-01T12:36:23Z,parking-billing-service,complete,success,parking-billing,CITIZEN-008,400,,in_progress,simulated,LOT-HARBOUR-002,SU 0008
+PARK-0008,Reject Payment,2026-08-01T12:36:29Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-008,400,,payment_failed,simulated,LOT-HARBOUR-002,SU 0008
+PARK-0009,Register Parking Entry,2026-08-01T12:33:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,,,in_progress,simulated,LOT-LIBRARY-003,SU 0009
+PARK-0009,Close Parking Session,2026-08-01T13:16:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,,2580,in_progress,simulated,LOT-LIBRARY-003,SU 0009
+PARK-0009,Calculate Parking Fee,2026-08-01T13:16:10Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,2580,in_progress,simulated,LOT-LIBRARY-003,SU 0009
+PARK-0009,Initiate Payment,2026-08-01T13:16:25Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,,in_progress,simulated,LOT-LIBRARY-003,SU 0009
+PARK-0009,Confirm Payment,2026-08-01T13:16:39Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,,paid,simulated,LOT-LIBRARY-003,SU 0009
+PARK-0010,Register Parking Entry,2026-08-01T13:10:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,,,active,simulated,LOT-CENTRAL-001,SU 0010
+PARK-0011,Register Parking Entry,2026-08-01T13:47:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,,,in_progress,simulated,LOT-HARBOUR-002,SU 0011
+PARK-0011,Close Parking Session,2026-08-01T19:38:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,,21060,in_progress,simulated,LOT-HARBOUR-002,SU 0011
+PARK-0011,Calculate Parking Fee,2026-08-01T19:38:09Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,2400,21060,in_progress,simulated,LOT-HARBOUR-002,SU 0011
+PARK-0011,Initiate Payment,2026-08-01T19:38:22Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,2400,,in_progress,simulated,LOT-HARBOUR-002,SU 0011
+PARK-0011,Confirm Payment,2026-08-01T19:38:30Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,2400,,paid,simulated,LOT-HARBOUR-002,SU 0011
+PARK-0012,Register Parking Entry,2026-08-01T14:24:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,,,in_progress,simulated,LOT-LIBRARY-003,SU 0012
+PARK-0012,Close Parking Session,2026-08-01T18:07:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,,13380,in_progress,simulated,LOT-LIBRARY-003,SU 0012
+PARK-0012,Calculate Parking Fee,2026-08-01T18:07:08Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,1600,13380,in_progress,simulated,LOT-LIBRARY-003,SU 0012
+PARK-0012,Initiate Payment,2026-08-01T18:07:18Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,1600,,in_progress,simulated,LOT-LIBRARY-003,SU 0012
+PARK-0012,Confirm Payment,2026-08-01T18:07:35Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,1600,,paid,simulated,LOT-LIBRARY-003,SU 0012
+PARK-0013,Register Parking Entry,2026-08-01T15:01:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,,in_progress,simulated,LOT-CENTRAL-001,SU 0013
+PARK-0013,Close Parking Session,2026-08-01T19:39:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,16680,in_progress,simulated,LOT-CENTRAL-001,SU 0013
+PARK-0013,Calculate Parking Fee,2026-08-01T19:39:09Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2000,16680,in_progress,simulated,LOT-CENTRAL-001,SU 0013
+PARK-0013,Initiate Payment,2026-08-01T19:39:25Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2000,,in_progress,simulated,LOT-CENTRAL-001,SU 0013
+PARK-0013,Confirm Payment,2026-08-01T19:39:30Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,2000,,paid,simulated,LOT-CENTRAL-001,SU 0013
+PARK-0014,Register Parking Entry,2026-08-01T15:38:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,,in_progress,simulated,LOT-HARBOUR-002,SU 0014
+PARK-0014,Close Parking Session,2026-08-01T16:08:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,1800,in_progress,simulated,LOT-HARBOUR-002,SU 0014
+PARK-0014,Calculate Parking Fee,2026-08-01T16:08:15Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,400,1800,in_progress,simulated,LOT-HARBOUR-002,SU 0014
+PARK-0014,Initiate Payment,2026-08-01T16:08:19Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,400,,in_progress,simulated,LOT-HARBOUR-002,SU 0014
+PARK-0014,Confirm Payment,2026-08-01T16:08:30Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,400,,paid,simulated,LOT-HARBOUR-002,SU 0014
+PARK-0015,Register Parking Entry,2026-08-01T16:15:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,,in_progress,simulated,LOT-LIBRARY-003,SU 0015
+PARK-0015,Close Parking Session,2026-08-01T18:06:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,6660,in_progress,simulated,LOT-LIBRARY-003,SU 0015
+PARK-0015,Calculate Parking Fee,2026-08-01T18:06:08Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,800,6660,in_progress,simulated,LOT-LIBRARY-003,SU 0015
+PARK-0015,Initiate Payment,2026-08-01T18:06:13Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,800,,in_progress,simulated,LOT-LIBRARY-003,SU 0015
+PARK-0015,Confirm Payment,2026-08-01T18:06:22Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,800,,paid,simulated,LOT-LIBRARY-003,SU 0015
+PARK-0016,Register Parking Entry,2026-08-01T16:52:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,,in_progress,simulated,LOT-CENTRAL-001,SU 0016
+PARK-0016,Close Parking Session,2026-08-01T17:49:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,3420,in_progress,simulated,LOT-CENTRAL-001,SU 0016
+PARK-0016,Calculate Parking Fee,2026-08-01T17:49:16Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,400,3420,in_progress,simulated,LOT-CENTRAL-001,SU 0016
+PARK-0016,Initiate Payment,2026-08-01T17:49:20Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,400,,in_progress,simulated,LOT-CENTRAL-001,SU 0016
+PARK-0016,Confirm Payment,2026-08-01T17:49:33Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,400,,paid,simulated,LOT-CENTRAL-001,SU 0016
+PARK-0017,Register Parking Entry,2026-08-01T17:29:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,,in_progress,simulated,LOT-HARBOUR-002,SU 0017
+PARK-0017,Close Parking Session,2026-08-01T18:30:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,3660,in_progress,simulated,LOT-HARBOUR-002,SU 0017
+PARK-0017,Calculate Parking Fee,2026-08-01T18:30:11Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,800,3660,in_progress,simulated,LOT-HARBOUR-002,SU 0017
+PARK-0017,Initiate Payment,2026-08-01T18:30:12Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,800,,in_progress,simulated,LOT-HARBOUR-002,SU 0017
+PARK-0017,Reject Payment,2026-08-01T18:30:29Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-005,800,,payment_failed,simulated,LOT-HARBOUR-002,SU 0017
+PARK-0018,Register Parking Entry,2026-08-01T18:06:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,,,in_progress,simulated,LOT-LIBRARY-003,SU 0018
+PARK-0018,Close Parking Session,2026-08-01T19:40:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,,5640,in_progress,simulated,LOT-LIBRARY-003,SU 0018
+PARK-0018,Calculate Parking Fee,2026-08-01T19:40:04Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,800,5640,in_progress,simulated,LOT-LIBRARY-003,SU 0018
+PARK-0018,Initiate Payment,2026-08-01T19:40:16Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,800,,in_progress,simulated,LOT-LIBRARY-003,SU 0018
+PARK-0018,Reject Payment,2026-08-01T19:40:17Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-006,800,,payment_failed,simulated,LOT-LIBRARY-003,SU 0018
+PARK-0019,Register Parking Entry,2026-08-01T18:43:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,,,in_progress,simulated,LOT-CENTRAL-001,SU 0019
+PARK-0019,Close Parking Session,2026-08-02T00:28:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,,20700,in_progress,simulated,LOT-CENTRAL-001,SU 0019
+PARK-0019,Calculate Parking Fee,2026-08-02T00:28:16Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,2400,20700,in_progress,simulated,LOT-CENTRAL-001,SU 0019
+PARK-0019,Initiate Payment,2026-08-02T00:28:29Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,2400,,in_progress,simulated,LOT-CENTRAL-001,SU 0019
+PARK-0019,Confirm Payment,2026-08-02T00:28:45Z,parking-billing-service,complete,success,parking-billing,CITIZEN-007,2400,,paid,simulated,LOT-CENTRAL-001,SU 0019
+PARK-0020,Register Parking Entry,2026-08-01T19:20:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-008,,,active,simulated,LOT-HARBOUR-002,SU 0020
+PARK-0021,Register Parking Entry,2026-08-01T19:57:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,,,in_progress,simulated,LOT-LIBRARY-003,SU 0021
+PARK-0021,Close Parking Session,2026-08-01T20:20:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,,1380,in_progress,simulated,LOT-LIBRARY-003,SU 0021
+PARK-0021,Calculate Parking Fee,2026-08-01T20:20:12Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,1380,in_progress,simulated,LOT-LIBRARY-003,SU 0021
+PARK-0021,Initiate Payment,2026-08-01T20:20:16Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,,in_progress,simulated,LOT-LIBRARY-003,SU 0021
+PARK-0021,Confirm Payment,2026-08-01T20:20:26Z,parking-billing-service,complete,success,parking-billing,CITIZEN-009,400,,paid,simulated,LOT-LIBRARY-003,SU 0021
+PARK-0022,Register Parking Entry,2026-08-01T20:34:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,,,in_progress,simulated,LOT-CENTRAL-001,SU 0022
+PARK-0022,Close Parking Session,2026-08-01T22:36:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,,7320,in_progress,simulated,LOT-CENTRAL-001,SU 0022
+PARK-0022,Calculate Parking Fee,2026-08-01T22:36:16Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,1200,7320,in_progress,simulated,LOT-CENTRAL-001,SU 0022
+PARK-0022,Initiate Payment,2026-08-01T22:36:34Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,1200,,in_progress,simulated,LOT-CENTRAL-001,SU 0022
+PARK-0022,Confirm Payment,2026-08-01T22:36:49Z,parking-billing-service,complete,success,parking-billing,CITIZEN-010,1200,,paid,simulated,LOT-CENTRAL-001,SU 0022
+PARK-0023,Register Parking Entry,2026-08-01T21:11:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,,,in_progress,simulated,LOT-HARBOUR-002,SU 0023
+PARK-0023,Close Parking Session,2026-08-02T00:35:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,,12240,in_progress,simulated,LOT-HARBOUR-002,SU 0023
+PARK-0023,Calculate Parking Fee,2026-08-02T00:35:04Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,1600,12240,in_progress,simulated,LOT-HARBOUR-002,SU 0023
+PARK-0023,Initiate Payment,2026-08-02T00:35:13Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,1600,,in_progress,simulated,LOT-HARBOUR-002,SU 0023
+PARK-0023,Confirm Payment,2026-08-02T00:35:19Z,parking-billing-service,complete,success,parking-billing,CITIZEN-011,1600,,paid,simulated,LOT-HARBOUR-002,SU 0023
+PARK-0024,Register Parking Entry,2026-08-01T21:48:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,,,in_progress,simulated,LOT-LIBRARY-003,SU 0024
+PARK-0024,Close Parking Session,2026-08-01T23:16:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,,5280,in_progress,simulated,LOT-LIBRARY-003,SU 0024
+PARK-0024,Calculate Parking Fee,2026-08-01T23:16:15Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,800,5280,in_progress,simulated,LOT-LIBRARY-003,SU 0024
+PARK-0024,Initiate Payment,2026-08-01T23:16:24Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,800,,in_progress,simulated,LOT-LIBRARY-003,SU 0024
+PARK-0024,Confirm Payment,2026-08-01T23:16:28Z,parking-billing-service,complete,success,parking-billing,CITIZEN-012,800,,paid,simulated,LOT-LIBRARY-003,SU 0024
+PARK-0025,Register Parking Entry,2026-08-01T22:25:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,,in_progress,simulated,LOT-CENTRAL-001,SU 0025
+PARK-0025,Close Parking Session,2026-08-02T01:45:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,,12000,in_progress,simulated,LOT-CENTRAL-001,SU 0025
+PARK-0025,Calculate Parking Fee,2026-08-02T01:45:06Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,1600,12000,in_progress,simulated,LOT-CENTRAL-001,SU 0025
+PARK-0025,Initiate Payment,2026-08-02T01:45:07Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,1600,,in_progress,simulated,LOT-CENTRAL-001,SU 0025
+PARK-0025,Confirm Payment,2026-08-02T01:45:08Z,parking-billing-service,complete,success,parking-billing,CITIZEN-001,1600,,paid,simulated,LOT-CENTRAL-001,SU 0025
+PARK-0026,Register Parking Entry,2026-08-01T23:02:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,,in_progress,simulated,LOT-HARBOUR-002,SU 0026
+PARK-0026,Close Parking Session,2026-08-02T04:20:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,,19080,in_progress,simulated,LOT-HARBOUR-002,SU 0026
+PARK-0026,Calculate Parking Fee,2026-08-02T04:20:13Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,2400,19080,in_progress,simulated,LOT-HARBOUR-002,SU 0026
+PARK-0026,Initiate Payment,2026-08-02T04:20:21Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,2400,,in_progress,simulated,LOT-HARBOUR-002,SU 0026
+PARK-0026,Confirm Payment,2026-08-02T04:20:29Z,parking-billing-service,complete,success,parking-billing,CITIZEN-002,2400,,paid,simulated,LOT-HARBOUR-002,SU 0026
+PARK-0027,Register Parking Entry,2026-08-01T23:39:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,,in_progress,simulated,LOT-LIBRARY-003,SU 0027
+PARK-0027,Close Parking Session,2026-08-02T00:16:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,,2220,in_progress,simulated,LOT-LIBRARY-003,SU 0027
+PARK-0027,Calculate Parking Fee,2026-08-02T00:16:15Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,400,2220,in_progress,simulated,LOT-LIBRARY-003,SU 0027
+PARK-0027,Initiate Payment,2026-08-02T00:16:18Z,parking-billing-service,complete,success,parking-billing,CITIZEN-003,400,,in_progress,simulated,LOT-LIBRARY-003,SU 0027
+PARK-0027,Reject Payment,2026-08-02T00:16:33Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-003,400,,payment_failed,simulated,LOT-LIBRARY-003,SU 0027
+PARK-0028,Register Parking Entry,2026-08-02T00:16:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,,in_progress,simulated,LOT-CENTRAL-001,SU 0028
+PARK-0028,Close Parking Session,2026-08-02T05:56:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,,20400,in_progress,simulated,LOT-CENTRAL-001,SU 0028
+PARK-0028,Calculate Parking Fee,2026-08-02T05:56:04Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,2400,20400,in_progress,simulated,LOT-CENTRAL-001,SU 0028
+PARK-0028,Initiate Payment,2026-08-02T05:56:10Z,parking-billing-service,complete,success,parking-billing,CITIZEN-004,2400,,in_progress,simulated,LOT-CENTRAL-001,SU 0028
+PARK-0028,Reject Payment,2026-08-02T05:56:27Z,parking-billing-service,complete,failure,parking-billing,CITIZEN-004,2400,,payment_failed,simulated,LOT-CENTRAL-001,SU 0028
+PARK-0029,Register Parking Entry,2026-08-02T00:53:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,,in_progress,simulated,LOT-HARBOUR-002,SU 0029
+PARK-0029,Close Parking Session,2026-08-02T06:11:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,,19080,in_progress,simulated,LOT-HARBOUR-002,SU 0029
+PARK-0029,Calculate Parking Fee,2026-08-02T06:11:03Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,2400,19080,in_progress,simulated,LOT-HARBOUR-002,SU 0029
+PARK-0029,Initiate Payment,2026-08-02T06:11:14Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,2400,,in_progress,simulated,LOT-HARBOUR-002,SU 0029
+PARK-0029,Confirm Payment,2026-08-02T06:11:29Z,parking-billing-service,complete,success,parking-billing,CITIZEN-005,2400,,paid,simulated,LOT-HARBOUR-002,SU 0029
+PARK-0030,Register Parking Entry,2026-08-02T01:30:00Z,parking-billing-service,complete,success,parking-billing,CITIZEN-006,,,active,simulated,LOT-LIBRARY-003,SU 0030

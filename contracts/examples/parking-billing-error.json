@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "SESSION_ALREADY_PAID",
+    "message": "This parking session has already been paid.",
+    "details": null
+  }
+}

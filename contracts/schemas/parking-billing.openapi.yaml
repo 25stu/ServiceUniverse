@@ -1,0 +1,309 @@
+openapi: 3.1.0
+info:
+  title: Parking Billing and Payment Service
+  version: 0.1.0
+servers:
+  - url: http://localhost:8302
+paths:
+  /health:
+    get:
+      operationId: parkingBillingHealth
+      responses:
+        "200":
+          description: Service is healthy.
+  /api/v1/parking-sessions:
+    get:
+      operationId: listParkingSessions
+      parameters:
+        - name: citizen_id
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, completed]
+      responses:
+        "200":
+          description: Parking sessions matching the filters.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ParkingSession"
+    post:
+      operationId: createParkingSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParkingSessionCreate"
+      responses:
+        "201":
+          description: Parking session created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingSession"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /api/v1/parking-sessions/{session_id}:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      operationId: getParkingSession
+      responses:
+        "200":
+          description: Parking session found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingSession"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/v1/parking-sessions/{session_id}/end:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    post:
+      operationId: endParkingSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ended_at:
+                  type: string
+                  format: date-time
+      responses:
+        "200":
+          description: Session ended and fee calculated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingSession"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /api/v1/parking-payments:
+    post:
+      operationId: createParkingPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ParkingPaymentCreate"
+      responses:
+        "201":
+          description: Parking payment completed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingPayment"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /api/v1/parking-payments/{payment_id}:
+    get:
+      operationId: getParkingPayment
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Parking payment found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParkingPayment"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/v1/parking-sessions/{session_id}/events:
+    parameters:
+      - $ref: "#/components/parameters/SessionId"
+    get:
+      operationId: listParkingSessionEvents
+      responses:
+        "200":
+          description: Process events for one parking session.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProcessEvent"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  parameters:
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: Resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: The requested state transition is not allowed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    ParkingSessionCreate:
+      type: object
+      required: [citizen_id, vehicle_plate, parking_lot_id]
+      properties:
+        citizen_id:
+          type: string
+        vehicle_plate:
+          type: string
+        parking_lot_id:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+    ParkingSession:
+      type: object
+      required:
+        - session_id
+        - citizen_id
+        - vehicle_plate
+        - parking_lot_id
+        - started_at
+        - currency
+        - status
+        - payment_status
+      properties:
+        session_id:
+          type: string
+        citizen_id:
+          type: string
+        vehicle_plate:
+          type: string
+        parking_lot_id:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: [string, "null"]
+          format: date-time
+        duration_minutes:
+          type: [integer, "null"]
+        amount_minor:
+          type: [integer, "null"]
+        currency:
+          type: string
+          const: AUD
+        status:
+          type: string
+          enum: [active, completed]
+        payment_status:
+          type: string
+          enum: [not_due, unpaid, paid]
+    ParkingPaymentCreate:
+      type: object
+      required: [session_id, payment_method]
+      properties:
+        session_id:
+          type: string
+        payment_method:
+          type: string
+          enum: [card, digital_wallet]
+    ParkingPayment:
+      type: object
+      required:
+        - payment_id
+        - session_id
+        - amount_minor
+        - currency
+        - payment_method
+        - status
+        - paid_at
+      properties:
+        payment_id:
+          type: string
+        session_id:
+          type: string
+        amount_minor:
+          type: integer
+        currency:
+          type: string
+          const: AUD
+        payment_method:
+          type: string
+          enum: [card, digital_wallet]
+        status:
+          type: string
+          const: completed
+        paid_at:
+          type: string
+          format: date-time
+    ProcessEvent:
+      type: object
+      required:
+        - case_id
+        - activity
+        - timestamp
+        - resource
+        - lifecycle
+        - outcome
+        - service
+        - citizen_id
+        - status
+      properties:
+        case_id:
+          type: string
+        activity:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        resource:
+          type: string
+        lifecycle:
+          type: string
+          const: complete
+        outcome:
+          type: string
+        service:
+          type: string
+          const: parking-billing
+        citizen_id:
+          type: string
+        cost_minor:
+          type: [integer, "null"]
+        duration_seconds:
+          type: [integer, "null"]
+        status:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, details]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details: {}
