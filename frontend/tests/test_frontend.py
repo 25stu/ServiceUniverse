@@ -28,3 +28,24 @@ def test_unknown_provider_returns_404() -> None:
     response = client.get("/providers/not-a-provider")
 
     assert response.status_code == 404
+
+
+def test_water_billing_page_contains_citizen_workflow() -> None:
+    response = client.get("/services/water-billing")
+
+    assert response.status_code == 200
+    assert "Review and pay a water bill" in response.text
+    assert 'data-water-bill-form' in response.text
+    assert "/static/js/water-billing.js" in response.text
+
+
+def test_water_bill_detail_and_receipt_pages_render() -> None:
+    detail = client.get("/services/water-billing/bills/BILL-1001")
+    receipt = client.get("/services/water-billing/bills/BILL-1002/receipt")
+
+    assert detail.status_code == 200
+    assert 'data-water-bill-detail' in detail.text
+    assert "/static/js/water-bill-detail.js" in detail.text
+    assert receipt.status_code == 200
+    assert 'data-water-receipt-page' in receipt.text
+    assert "/static/js/water-bill-receipt.js" in receipt.text

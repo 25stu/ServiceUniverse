@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Water bill details — ServiceUniverse{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/water-billing.css') }}">
+  <script src="{{ url_for('static', path='/js/water-bill-detail.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="water-document" data-water-bill-detail data-bill-id="{{ bill_id }}">
+    <nav class="water-document-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <a href="/services/water-billing">Water billing</a>
+      <span aria-hidden="true">/</span>
+      <span>Bill details</span>
+    </nav>
+
+    <header class="water-document-header">
+      <div>
+        <p class="eyebrow">Municipal Utilities Authority</p>
+        <h1>Water bill</h1>
+        <p class="water-document-subtitle">A detailed statement of charges and water usage.</p>
+      </div>
+      <p class="water-document-reference">Bill reference<br><strong data-water-bill-reference>{{ bill_id }}</strong></p>
+    </header>
+
+    <p class="water-document-message" data-water-message role="status" aria-live="polite">Loading bill details…</p>
+    <div class="water-document-grid">
+      <section class="water-statement" data-water-bill-content aria-live="polite"></section>
+      <aside class="water-document-aside">
+        <p class="eyebrow">Need help?</p>
+        <p>Keep your account reference and bill reference ready when you contact the Municipal Utilities Authority.</p>
+        <a href="/services/water-billing">Back to all water bills</a>
+      </aside>
+    </div>
+  </section>
+{% endblock %}

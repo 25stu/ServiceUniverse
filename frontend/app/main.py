@@ -92,6 +92,46 @@ async def provider_page(request: Request, provider_slug: str) -> HTMLResponse:
     )
 
 
+@app.get(
+    "/services/water-billing/bills/{bill_id}",
+    response_class=HTMLResponse,
+)
+async def water_bill_detail(request: Request, bill_id: str) -> HTMLResponse:
+    result = find_service(load_catalog(), "water-billing")
+    assert result is not None
+    provider, service = result
+    return templates.TemplateResponse(
+        request=request,
+        name="services/water-bill-detail.html",
+        context=template_context(
+            request,
+            provider=provider,
+            service=service,
+            bill_id=bill_id,
+        ),
+    )
+
+
+@app.get(
+    "/services/water-billing/bills/{bill_id}/receipt",
+    response_class=HTMLResponse,
+)
+async def water_bill_receipt(request: Request, bill_id: str) -> HTMLResponse:
+    result = find_service(load_catalog(), "water-billing")
+    assert result is not None
+    provider, service = result
+    return templates.TemplateResponse(
+        request=request,
+        name="services/water-bill-receipt.html",
+        context=template_context(
+            request,
+            provider=provider,
+            service=service,
+            bill_id=bill_id,
+        ),
+    )
+
+
 @app.get("/services/{service_slug}", response_class=HTMLResponse)
 async def service_page(request: Request, service_slug: str) -> HTMLResponse:
     catalog = load_catalog()
