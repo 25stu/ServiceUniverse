@@ -18,6 +18,18 @@ provided by MunicipalCultureAndRecreationServices
 consumed by Citizen
 ```
 
+Formalized BSRL-style statement:
+
+```text
+SERVICE AttractionRecommendationAndReservation
+  PROVIDER MunicipalCultureAndRecreationServices
+  CONSUMER Citizen
+  CHANNEL ServiceUniverseGateway
+  PURPOSE recommend suitable attractions and reserve a visit
+  PRECONDITION Citizen has submitted visit preferences
+  POSTCONDITION Reservation is confirmed or a business rejection is returned
+```
+
 The service realizes two business capabilities:
 
 - `RecommendAttractions`: rank available attractions by preference, date, rating,
@@ -35,6 +47,10 @@ The service realizes two business capabilities:
 | API Gateway | Service mediator | Provides the public endpoint and converts downstream errors into the platform envelope. |
 
 ## Service Contract
+
+The service contract is public at the Gateway boundary and strongly typed at the
+downstream microservice boundary. The Gateway response uses the common platform
+envelope, while the microservice response uses domain JSON.
 
 ### Recommend Attractions
 
@@ -121,3 +137,11 @@ cancelled -> terminal
 - Gateway route: `gateway/app/routers/attraction_reservation.py`
 - Frontend page: `frontend/templates/services/attraction-reservation.html`
 - Contract: `contracts/schemas/attraction-reservation.openapi.yaml`
+
+## Non-Functional Requirements
+
+- Availability: `GET /health` must return service status for integration checks.
+- Traceability: Gateway requests include or generate `X-Request-ID`.
+- Safety: validation errors and business conflicts return stable error codes.
+- Encapsulation: the service does not import other services or read their data.
+- Repeatability: demo data and tests are deterministic for clean-clone review.
