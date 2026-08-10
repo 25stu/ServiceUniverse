@@ -1,16 +1,37 @@
 from __future__ import annotations
 
+import os
 from datetime import date
 from enum import StrEnum
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException, Query, status
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, FastAPI, HTTPException, Query, Request, status
+from pydantic import BaseModel, ConfigDict, Field
 
-app = FastAPI(
-    title="Attraction Recommendation and Reservation Service",
-    version="0.1.0",
-)
+from services.attraction_reservation.app.repository import ReservationRepository
+
+router = APIRouter()
+
+
+def create_app(database_url: str | None = None) -> FastAPI:
+    application = FastAPI(
+        title="Attraction Recommendation and Reservation Service",
+        version="0.1.0",
+    )
+    repository = ReservationRepository(
+        database_url or os.getenv("ATTRACTION_DATABASE_URL")
+    )
+    repository.initialize()
+    application.state.repository = repository
+    application.include_router(router)
+    return application
+
+
+def get_repository(request: Request) -> ReservationRepository:
+    return request.app.state.repository
+
+
+app: FastAPI
 
 
 class ReservationStatus(StrEnum):
@@ -42,6 +63,8 @@ class ReservationCreate(BaseModel):
 
 
 class Reservation(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     reservation_id: str
     attraction_id: str
     citizen_id: str
@@ -112,8 +135,6 @@ ATTRACTIONS: dict[str, Attraction] = {
     ),
 }
 
-RESERVATIONS: dict[str, Reservation] = {}
-ACTIVE_STATUSES = {ReservationStatus.pending, ReservationStatus.confirmed}
 STATUS_TRANSITIONS = {
     ReservationStatus.pending: {
         ReservationStatus.confirmed,
@@ -140,20 +161,19 @@ def error(
     )
 
 
-def remaining_capacity(attraction_id: str, visit_date: date) -> int:
+def remaining_capacity(
+    repository: ReservationRepository, attraction_id: str, visit_date: date
+) -> int:
     attraction = ATTRACTIONS[attraction_id]
-    reserved = sum(
-        reservation.visitor_count
-        for reservation in RESERVATIONS.values()
-        if reservation.attraction_id == attraction_id
-        and reservation.visit_date == visit_date
-        and reservation.status in ACTIVE_STATUSES
-    )
+    reserved = repository.reserved_visitors(attraction_id, visit_date)
     return attraction.capacity_per_day - reserved
 
 
 def ensure_available(
-    attraction: Attraction, visit_date: date, visitor_count: int
+    repository: ReservationRepository,
+    attraction: Attraction,
+    visit_date: date,
+    visitor_count: int,
 ) -> None:
     day_name = visit_date.strftime("%A").lower()
     if day_name not in attraction.open_days:
@@ -164,7 +184,7 @@ def ensure_available(
             {"open_days": attraction.open_days},
         )
 
-    remaining = remaining_capacity(attraction.attraction_id, visit_date)
+    remaining = remaining_capacity(repository, attraction.attraction_id, visit_date)
     if visitor_count > remaining:
         raise error(
             status.HTTP_409_CONFLICT,
@@ -174,7 +194,7 @@ def ensure_available(
         )
 
 
-@app.get("/health")
+@router.get("/health")
 async def health() -> dict[str, str]:
     return {
         "status": "healthy",
@@ -183,7 +203,7 @@ async def health() -> dict[str, str]:
     }
 
 
-@app.get("/api/v1/service-info")
+@router.get("/api/v1/service-info")
 async def service_info() -> dict[str, str]:
     return {
         "service": "attraction-reservation",
@@ -193,8 +213,9 @@ async def service_info() -> dict[str, str]:
     }
 
 
-@app.get("/api/v1/attractions")
+@router.get("/api/v1/attractions")
 async def list_attractions(
+    request: Request,
     category: str | None = None,
     district: str | None = None,
     indoor: bool | None = None,
@@ -203,6 +224,7 @@ async def list_attractions(
     visitor_count: int = Query(default=1, gt=0, le=10),
     recommend: bool = False,
 ) -> list[dict[str, object]]:
+    repository = get_repository(request)
     attractions = list(ATTRACTIONS.values())
     if category:
         attractions = [item for item in attractions if item.category == category]
@@ -215,7 +237,7 @@ async def list_attractions(
     enriched = []
     for attraction in attractions:
         available_capacity = (
-            remaining_capacity(attraction.attraction_id, visit_date)
+            remaining_capacity(repository, attraction.attraction_id, visit_date)
             if visit_date
             else attraction.capacity_per_day
         )
@@ -250,12 +272,15 @@ async def list_attractions(
     return enriched
 
 
-@app.post(
+@router.post(
     "/api/v1/reservations",
     response_model=Reservation,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_reservation(payload: ReservationCreate) -> Reservation:
+async def create_reservation(
+    request: Request, payload: ReservationCreate
+) -> Reservation:
+    repository = get_repository(request)
     attraction = ATTRACTIONS.get(payload.attraction_id)
     if attraction is None:
         raise error(
@@ -264,7 +289,12 @@ async def create_reservation(payload: ReservationCreate) -> Reservation:
             "The requested attraction was not found.",
         )
 
-    ensure_available(attraction, payload.visit_date, payload.visitor_count)
+    ensure_available(
+        repository,
+        attraction,
+        payload.visit_date,
+        payload.visitor_count,
+    )
     reservation = Reservation(
         reservation_id=f"RSV-{uuid4().hex[:8].upper()}",
         attraction_id=payload.attraction_id,
@@ -274,27 +304,37 @@ async def create_reservation(payload: ReservationCreate) -> Reservation:
         contact_phone=payload.contact_phone,
         status=ReservationStatus.confirmed,
     )
-    RESERVATIONS[reservation.reservation_id] = reservation
-    return reservation
+    record = repository.create(reservation.model_dump())
+    return Reservation.model_validate(record)
 
 
-@app.get("/api/v1/reservations/{reservation_id}", response_model=Reservation)
-async def get_reservation(reservation_id: str) -> Reservation:
-    reservation = RESERVATIONS.get(reservation_id)
+@router.get("/api/v1/reservations/{reservation_id}", response_model=Reservation)
+async def get_reservation(request: Request, reservation_id: str) -> Reservation:
+    reservation = get_repository(request).get(reservation_id)
     if reservation is None:
         raise error(
             status.HTTP_404_NOT_FOUND,
             "RESERVATION_NOT_FOUND",
             "The requested reservation was not found.",
         )
-    return reservation
+    return Reservation.model_validate(reservation)
 
 
-@app.patch("/api/v1/reservations/{reservation_id}/status", response_model=Reservation)
+@router.patch(
+    "/api/v1/reservations/{reservation_id}/status", response_model=Reservation
+)
 async def update_reservation_status(
-    reservation_id: str, payload: ReservationStatusUpdate
+    request: Request,
+    reservation_id: str,
+    payload: ReservationStatusUpdate,
 ) -> Reservation:
-    reservation = RESERVATIONS.get(reservation_id)
+    repository = get_repository(request)
+    reservation_record = repository.get(reservation_id)
+    reservation = (
+        Reservation.model_validate(reservation_record)
+        if reservation_record is not None
+        else None
+    )
     if reservation is None:
         raise error(
             status.HTTP_404_NOT_FOUND,
@@ -314,6 +354,9 @@ async def update_reservation_status(
             },
         )
 
-    updated = reservation.model_copy(update={"status": payload.status})
-    RESERVATIONS[reservation_id] = updated
-    return updated
+    updated = repository.update_status(reservation_id, payload.status.value)
+    assert updated is not None
+    return Reservation.model_validate(updated)
+
+
+app = create_app()

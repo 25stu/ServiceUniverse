@@ -91,9 +91,16 @@ services:
 
   attraction-reservation:
     <<: *app
+    build:
+      context: .
+      dockerfile: services/attraction_reservation/Dockerfile
     command: uvicorn services.attraction_reservation.app.main:app --host 0.0.0.0 --port 8201
+    environment:
+      ATTRACTION_DATABASE_URL: sqlite:////data/attraction_reservation.db
     ports:
       - "8201:8201"
+    volumes:
+      - attraction_reservation_data:/data
     healthcheck:
       <<: *healthcheck
       test:
@@ -153,5 +160,6 @@ services:
         - "import urllib.request; urllib.request.urlopen('http://localhost:8302/health')"
 
 volumes:
+  attraction_reservation_data:
   parking_availability_data:
   parking_billing_data:

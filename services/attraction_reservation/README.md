@@ -12,8 +12,9 @@
 2. 创建和查询预约；
 3. 拒绝容量冲突和非法预约状态转换。
 
-当前实现提供可重复的内置演示数据、服务专用 Dockerfile、单元测试和 API 契约。
-生产化数据库仍保留为后续扩展点。
+当前实现提供可重复的内置景点数据、服务自有 SQLite 预约存储、服务专用
+Dockerfile、单元测试和 API 契约。预约在服务重启后仍然保留；数据库地址通过
+`ATTRACTION_DATABASE_URL` 配置。
 
 ## API
 
@@ -41,6 +42,10 @@ python -m uvicorn services.attraction_reservation.app.main:app --reload --port 8
 ```
 
 验证：<http://localhost:8201/health>
+
+默认数据库位于
+`services/attraction_reservation/data/attraction_reservation.db`。Compose 使用独立
+命名卷挂载 `/data`，不会读取其他服务的数据。
 
 ```bash
 python -m pytest services/attraction_reservation tests/test_service_scaffolds.py
