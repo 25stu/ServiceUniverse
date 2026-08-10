@@ -1,3 +1,221 @@
 {% extends "service.html" %}
 
-{# Owner C: override service_body or replace this file when the contract is ready. #}
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/attraction-reservation.css') }}">
+{% endblock %}
+
+{% block content %}
+  <section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ service.name }}</span>
+    </nav>
+    <div class="service-title-grid">
+      <div>
+        <p class="eyebrow">{{ provider.code }} / Reservation desk</p>
+        <h1>{{ service.name }}</h1>
+      </div>
+      <div class="service-readiness">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div>
+          <p data-service-status>Checking service</p>
+          <small>Owner: Member {{ service.owner }}</small>
+        </div>
+      </div>
+    </div>
+    <p class="service-lede">{{ service.summary }}</p>
+  </section>
+
+  <section class="attraction-workspace">
+    <div class="integration-intro attraction-intro">
+      <p class="eyebrow">Visit planning</p>
+      <h2>Choose an available city attraction.</h2>
+      <p>
+        Recommendations are ranked by visitor fit, rating, opening day, and remaining
+        daily capacity.
+      </p>
+      <form class="reservation-search" data-attraction-search>
+        <div class="field-grid">
+          <label>
+            Date
+            <input name="visit_date" type="date" required>
+          </label>
+          <label>
+            Visitors
+            <input name="visitor_count" type="number" min="1" max="10" value="2" required>
+          </label>
+          <label>
+            District
+            <select name="district">
+              <option value="">Any district</option>
+              <option value="central">Central</option>
+              <option value="harbour">Harbour</option>
+              <option value="north">North</option>
+            </select>
+          </label>
+          <label>
+            Preference
+            <select name="category">
+              <option value="">Any category</option>
+              <option value="museum">Museum</option>
+              <option value="park">Park</option>
+              <option value="landmark">Landmark</option>
+              <option value="heritage">Heritage</option>
+            </select>
+          </label>
+        </div>
+        <button class="primary-action" type="submit">Refresh recommendations</button>
+      </form>
+    </div>
+
+    <div class="reservation-results" aria-live="polite">
+      <div class="results-heading">
+        <p class="eyebrow">Recommendation queue</p>
+        <h2>Available places</h2>
+      </div>
+      <div class="attraction-list" data-attraction-list></div>
+    </div>
+  </section>
+
+  <section class="reservation-panel" data-reservation-panel hidden>
+    <div class="reservation-copy">
+      <p class="eyebrow">Reservation</p>
+      <h2 data-selected-attraction>Select a place</h2>
+      <p data-selected-details></p>
+    </div>
+    <form class="reservation-form" data-reservation-form>
+      <input name="attraction_id" type="hidden">
+      <input name="visit_date" type="hidden">
+      <input name="visitor_count" type="hidden">
+      <label>
+        Citizen ID
+        <input name="citizen_id" value="CIT-0007" required minlength="3" maxlength="40">
+      </label>
+      <label>
+        Contact phone
+        <input name="contact_phone" value="0400 000 000" maxlength="30">
+      </label>
+      <button class="primary-action" type="submit">Confirm visit</button>
+      <p class="form-message" data-reservation-message></p>
+    </form>
+  </section>
+
+  <aside class="developer-note">
+    <p>Gateway endpoint</p>
+    <code>{{ gateway_public_url }}/api/v1/attractions</code>
+    <a href="/providers/{{ provider.slug }}">Back to {{ provider.short_name }}</a>
+  </aside>
+
+  <script>
+    const gatewayUrl = window.SERVICE_UNIVERSE?.gatewayUrl;
+    const searchForm = document.querySelector("[data-attraction-search]");
+    const attractionList = document.querySelector("[data-attraction-list]");
+    const reservationPanel = document.querySelector("[data-reservation-panel]");
+    const reservationForm = document.querySelector("[data-reservation-form]");
+    const selectedAttraction = document.querySelector("[data-selected-attraction]");
+    const selectedDetails = document.querySelector("[data-selected-details]");
+    const reservationMessage = document.querySelector("[data-reservation-message]");
+
+    function defaultVisitDate() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().slice(0, 10);
+    }
+
+    function renderAttractions(items, visitDate, visitorCount) {
+      attractionList.innerHTML = "";
+      if (!items.length) {
+        attractionList.innerHTML = "<p>No attraction has enough capacity for this request.</p>";
+        return;
+      }
+
+      items.forEach((item, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "attraction-option";
+        button.innerHTML = `
+          <span class="option-index">${String(index + 1).padStart(2, "0")}</span>
+          <span>
+            <strong>${item.name}</strong>
+            <small>${item.category} / ${item.district} / rating ${item.rating}</small>
+          </span>
+          <span class="option-capacity">${item.available_capacity} left</span>
+        `;
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".attraction-option").forEach((option) => {
+            option.dataset.selected = "false";
+          });
+          button.dataset.selected = "true";
+          reservationPanel.hidden = false;
+          selectedAttraction.textContent = item.name;
+          selectedDetails.textContent = `${item.description} Capacity left on ${visitDate}: ${item.available_capacity}.`;
+          reservationForm.attraction_id.value = item.attraction_id;
+          reservationForm.visit_date.value = visitDate;
+          reservationForm.visitor_count.value = visitorCount;
+          reservationMessage.textContent = "";
+        });
+        attractionList.append(button);
+      });
+    }
+
+    async function loadAttractions() {
+      const formData = new FormData(searchForm);
+      const params = new URLSearchParams({
+        visit_date: formData.get("visit_date"),
+        visitor_count: formData.get("visitor_count"),
+        recommend: "true"
+      });
+      ["district", "category"].forEach((name) => {
+        const value = formData.get(name);
+        if (value) params.set(name, value);
+      });
+
+      attractionList.innerHTML = "<p>Loading recommendations...</p>";
+      try {
+        const response = await fetch(`${gatewayUrl}/api/v1/attractions?${params}`);
+        const payload = await response.json();
+        if (!response.ok || !payload.success) {
+          attractionList.innerHTML = `<p>${payload.error?.message ?? "Recommendations are unavailable."}</p>`;
+          return;
+        }
+        renderAttractions(
+          payload.data,
+          formData.get("visit_date"),
+          formData.get("visitor_count")
+        );
+      } catch {
+        attractionList.innerHTML = "<p>Gateway is unavailable. Start the Gateway and Attraction Reservation service, then refresh recommendations.</p>";
+        return;
+      }
+    }
+
+    searchForm.visit_date.value = defaultVisitDate();
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      loadAttractions();
+    });
+    reservationForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const payload = Object.fromEntries(new FormData(reservationForm).entries());
+      payload.visitor_count = Number(payload.visitor_count);
+      try {
+        const response = await fetch(`${gatewayUrl}/api/v1/reservations`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        reservationMessage.textContent = response.ok && result.success
+          ? `Reservation ${result.data.reservation_id} is ${result.data.status}.`
+          : result.error?.message ?? "Reservation failed.";
+        if (response.ok) loadAttractions();
+      } catch {
+        reservationMessage.textContent = "Gateway is unavailable. Please start the service stack and try again.";
+      }
+    });
+    loadAttractions();
+  </script>
+{% endblock %}
