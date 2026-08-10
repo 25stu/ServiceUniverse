@@ -1,0 +1,325 @@
+openapi: 3.1.0
+info:
+  title: Public Library Membership and Account Service
+  version: 0.1.0
+  description: >-
+    Creates and manages public library memberships. Accounts are activated and
+    cards are issued immediately after a valid application in this prototype.
+servers:
+  - url: http://localhost:8202
+    description: Direct development endpoint
+paths:
+  /api/v1/library-memberships:
+    post:
+      operationId: createLibraryMembership
+      summary: Create and activate a library membership
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipApplication'
+            examples:
+              digitalMembership:
+                $ref: '#/components/examples/MembershipApplicationExample'
+      responses:
+        '201':
+          description: Membership created, activated, and card issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryAccount'
+        '400':
+          description: A business precondition was not met.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: A duplicate, suspended, or restricted account exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Request schema validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/library-accounts/{account_id}:
+    parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getLibraryAccount
+      summary: Retrieve membership, card, payment, and borrowing status
+      responses:
+        '200':
+          description: Library account found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryAccount'
+        '404':
+          description: Library account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      operationId: updateLibraryAccount
+      summary: Update citizen contact and service preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdate'
+      responses:
+        '200':
+          description: Library account updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibraryAccount'
+        '404':
+          description: Library account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Restricted accounts cannot be updated online.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Request schema validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    MembershipApplication:
+      type: object
+      additionalProperties: false
+      required:
+        - citizen_id
+        - full_name
+        - date_of_birth
+        - email
+        - phone
+        - card_type
+        - home_branch
+        - identity_verified
+        - terms_accepted
+        - payment_confirmed
+      properties:
+        citizen_id:
+          type: string
+          minLength: 3
+          maxLength: 64
+          pattern: '^[A-Za-z0-9][A-Za-z0-9_-]*$'
+        full_name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 7
+          maxLength: 30
+        preferred_language:
+          type: string
+          enum: [en, zh]
+          default: en
+        card_type:
+          type: string
+          enum: [digital, physical]
+        home_branch:
+          type: string
+        mailing_address:
+          type: [string, 'null']
+          description: Required when card_type is physical.
+        identity_verified:
+          type: boolean
+          description: False produces the IDENTITY_NOT_VERIFIED business error.
+        terms_accepted:
+          type: boolean
+          description: False produces the TERMS_NOT_ACCEPTED business error.
+        payment_confirmed:
+          type: boolean
+          description: >-
+            Confirms the simulated AUD 5.00 charge. False produces the
+            PAYMENT_REQUIRED business error. No real payment credentials are accepted.
+    AccountUpdate:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        preferred_language:
+          type: string
+          enum: [en, zh]
+        home_branch:
+          type: string
+        mailing_address:
+          type: string
+    LibraryAccount:
+      type: object
+      required:
+        - account_id
+        - citizen_id
+        - full_name
+        - date_of_birth
+        - email
+        - phone
+        - preferred_language
+        - home_branch
+        - status
+        - created_at
+        - activated_at
+        - card
+        - payment
+        - borrowing
+        - confirmation_notification
+      properties:
+        account_id:
+          type: string
+        citizen_id:
+          type: string
+        full_name:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        preferred_language:
+          type: string
+          enum: [en, zh]
+        home_branch:
+          type: string
+        mailing_address:
+          type: [string, 'null']
+        status:
+          type: string
+          enum: [active, suspended, restricted]
+        created_at:
+          type: string
+          format: date-time
+        activated_at:
+          type: string
+          format: date-time
+        card:
+          type: object
+          required: [card_number, card_type, issued_at, delivery_status]
+          properties:
+            card_number:
+              type: string
+            card_type:
+              type: string
+              enum: [digital, physical]
+            issued_at:
+              type: string
+              format: date-time
+            delivery_status:
+              type: string
+              enum: [issued, ready_for_delivery]
+        payment:
+          type: object
+          required: [amount_minor, currency, status, processed_at]
+          properties:
+            amount_minor:
+              type: integer
+              minimum: 0
+            currency:
+              type: string
+              const: AUD
+            status:
+              type: string
+              enum: [not_required, paid]
+            processed_at:
+              type: string
+              format: date-time
+            payment_reference:
+              type: [string, 'null']
+        borrowing:
+          type: object
+          required:
+            - items_on_loan
+            - items_overdue
+            - outstanding_fees_minor
+            - currency
+            - borrowing_allowed
+          properties:
+            items_on_loan:
+              type: integer
+              minimum: 0
+            items_overdue:
+              type: integer
+              minimum: 0
+            outstanding_fees_minor:
+              type: integer
+              minimum: 0
+            currency:
+              type: string
+              const: AUD
+            borrowing_allowed:
+              type: boolean
+        confirmation_notification:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, details]
+          properties:
+            code:
+              type: string
+              enum:
+                - IDENTITY_NOT_VERIFIED
+                - TERMS_NOT_ACCEPTED
+                - ACCOUNT_RESTRICTED
+                - MEMBERSHIP_ALREADY_EXISTS
+                - PAYMENT_REQUIRED
+                - LIBRARY_ACCOUNT_NOT_FOUND
+                - VALIDATION_ERROR
+            message:
+              type: string
+            details:
+              type: [object, array, 'null']
+  examples:
+    MembershipApplicationExample:
+      value:
+        citizen_id: CIT-20481
+        full_name: Morgan Lee
+        date_of_birth: '1994-06-18'
+        email: morgan.lee@example.com
+        phone: '+61 412 345 678'
+        preferred_language: en
+        card_type: digital
+        home_branch: Central Library
+        identity_verified: true
+        terms_accepted: true
+        payment_confirmed: true

@@ -1,0 +1,61 @@
+{% extends "service.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/gas-fault.css') }}">
+  <script src="{{ url_for('static', path='/js/gas-fault.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  {% include "services/gas-fault-hero.html" %}
+
+  <div class="gas-workspace" data-gas-page="user">
+    <div class="gas-workspace-bar">
+      <div>
+        <p class="eyebrow">Citizen workspace</p>
+        <h2>Your gas fault reports</h2>
+        <p>Signed in for this demonstration as <strong data-citizen-label></strong>.</p>
+      </div>
+      <a href="/services/gas-fault" data-change-role>Change role</a>
+    </div>
+
+    <aside class="gas-alert" aria-labelledby="gas-emergency-title">
+      <span class="gas-alert-number" aria-hidden="true">000</span>
+      <div>
+        <p class="eyebrow">Immediate danger</p>
+        <h2 id="gas-emergency-title">Leave the area before reporting online.</h2>
+        <p>If gas is escaping or anyone is unwell, move to safety and call emergency services.</p>
+      </div>
+    </aside>
+
+    <section class="gas-dashboard-grid">
+      <article class="gas-action-card">
+        <header class="gas-card-heading">
+          <span>01</span>
+          <div><p class="eyebrow">New request</p><h2>Report a gas fault</h2></div>
+        </header>
+        <form class="gas-form" id="fault-report-form">
+          <div class="gas-field-grid">
+            <label><span>Your name</span><input name="reporter_name" autocomplete="name" required minlength="2" maxlength="100"></label>
+            <label><span>Contact phone</span><input name="contact_phone" type="tel" autocomplete="tel" placeholder="0400 000 000" required minlength="7" maxlength="24" pattern="[0-9+() -]+"></label>
+            <label><span>Fault severity</span><select name="severity" required><option value="">Choose severity</option><option value="low">Low — minor concern</option><option value="medium">Medium — service affected</option><option value="high">High — likely hazard</option><option value="critical">Critical — immediate danger</option></select></label>
+          </div>
+          <label><span>Fault address</span><input name="address" autocomplete="street-address" required minlength="5" maxlength="200"></label>
+          <label><span>What did you observe?</span><textarea name="description" rows="5" required minlength="10" maxlength="1000"></textarea></label>
+          <div class="gas-form-footer"><p>A report number is issued immediately.</p><button type="submit">Submit report <span aria-hidden="true">→</span></button></div>
+        </form>
+        <div class="gas-message" id="report-message" role="status" aria-live="polite" hidden></div>
+      </article>
+
+      <article class="gas-records-panel">
+        <header class="gas-records-heading">
+          <div><p class="eyebrow">Your applications</p><h2>Submitted reports</h2></div>
+          <button type="button" data-refresh-reports>Refresh</button>
+        </header>
+        <div class="gas-message" id="records-message" role="status" aria-live="polite" hidden></div>
+        <div class="gas-record-list" id="user-report-list"></div>
+      </article>
+    </section>
+
+    {% include "services/gas-fault-report-detail.html" %}
+  </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "lot_id": "LOT-CENTRAL-001",
+  "name": "Central Station Car Park",
+  "address": "18 Railway Square",
+  "total_spaces": 240,
+  "available_spaces": 64,
+  "accessible_spaces": 12,
+  "updated_at": "2026-08-09T01:00:00Z",
+  "availability_status": "available"
+}

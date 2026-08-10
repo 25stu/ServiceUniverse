@@ -1,0 +1,31 @@
+{
+  "request": {
+    "citizen_id": "CITIZEN-001",
+    "reporter_name": "Alex Chen",
+    "contact_phone": "0400 000 000",
+    "address": "12 King Street",
+    "description": "A strong gas smell is coming from the kitchen meter.",
+    "severity": "high"
+  },
+  "response": {
+    "report_id": "FAULT-A1B2C3D4",
+    "citizen_id": "CITIZEN-001",
+    "reporter_name": "Alex Chen",
+    "contact_phone": "0400 000 000",
+    "address": "12 King Street",
+    "description": "A strong gas smell is coming from the kitchen meter.",
+    "severity": "high",
+    "status": "reported",
+    "created_at": "2026-08-08T09:30:00Z",
+    "updated_at": "2026-08-08T09:30:00Z",
+    "history": [
+      {
+        "status": "reported",
+        "activity": "Submit Fault Report",
+        "resource": "Citizen",
+        "note": "Fault report submitted.",
+        "timestamp": "2026-08-08T09:30:00Z"
+      }
+    ]
+  }
+}

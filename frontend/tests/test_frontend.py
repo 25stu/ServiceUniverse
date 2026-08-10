@@ -28,3 +28,67 @@ def test_unknown_provider_returns_404() -> None:
     response = client.get("/providers/not-a-provider")
 
     assert response.status_code == 404
+
+
+def test_library_page_contains_complete_member_workflow() -> None:
+    response = client.get("/services/library-account")
+
+    assert response.status_code == 200
+    assert 'data-membership-form' in response.text
+    assert 'data-account-search' in response.text
+    assert 'data-account-update' in response.text
+    assert "POST /api/v1/library-memberships" in response.text
+    assert 'name="payment_confirmed"' in response.text
+    assert "simulated AUD 5.00" in response.text
+    assert "/static/js/library-account.js" in response.text
+
+
+def test_water_billing_page_contains_citizen_workflow() -> None:
+    response = client.get("/services/water-billing")
+
+    assert response.status_code == 200
+    assert "Review and pay a water bill" in response.text
+    assert 'data-water-bill-form' in response.text
+    assert "/static/js/water-billing.js" in response.text
+
+
+def test_water_bill_detail_and_receipt_pages_render() -> None:
+    detail = client.get("/services/water-billing/bills/BILL-1001")
+    receipt = client.get("/services/water-billing/bills/BILL-1002/receipt")
+
+    assert detail.status_code == 200
+    assert 'data-water-bill-detail' in detail.text
+    assert "/static/js/water-bill-detail.js" in detail.text
+    assert receipt.status_code == 200
+    assert 'data-water-receipt-page' in receipt.text
+    assert "/static/js/water-bill-receipt.js" in receipt.text
+
+
+def test_gas_fault_page_contains_role_entries() -> None:
+    response = client.get("/services/gas-fault")
+
+    assert response.status_code == 200
+    assert 'id="citizen-entry-form"' in response.text
+    assert 'id="admin-entry-button"' in response.text
+    assert "/static/css/gas-fault.css" in response.text
+    assert "/static/js/gas-fault.js" in response.text
+
+
+def test_gas_fault_user_workspace_contains_personal_reports() -> None:
+    response = client.get("/services/gas-fault/user")
+
+    assert response.status_code == 200
+    assert 'id="fault-report-form"' in response.text
+    assert 'id="user-report-list"' in response.text
+    assert 'id="status-update-form"' not in response.text
+    assert 'id="cancel-report-button"' in response.text
+
+
+def test_gas_fault_admin_workspace_contains_all_reports_and_update() -> None:
+    response = client.get("/services/gas-fault/admin")
+
+    assert response.status_code == 200
+    assert 'id="admin-report-list"' in response.text
+    assert 'id="status-update-form"' in response.text
+    assert 'id="cancel-report-button"' not in response.text
+    assert "Demonstration role" in response.text

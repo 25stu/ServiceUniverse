@@ -91,9 +91,16 @@ services:
 
   attraction-reservation:
     <<: *app
+    build:
+      context: .
+      dockerfile: services/attraction_reservation/Dockerfile
     command: uvicorn services.attraction_reservation.app.main:app --host 0.0.0.0 --port 8201
+    environment:
+      ATTRACTION_DATABASE_URL: sqlite:////data/attraction_reservation.db
     ports:
       - "8201:8201"
+    volumes:
+      - attraction_reservation_data:/data
     healthcheck:
       <<: *healthcheck
       test:
@@ -117,9 +124,16 @@ services:
 
   parking-availability:
     <<: *app
+    build:
+      context: .
+      dockerfile: services/parking_availability/Dockerfile
     command: uvicorn services.parking_availability.app.main:app --host 0.0.0.0 --port 8301
+    environment:
+      PARKING_AVAILABILITY_DATABASE_URL: sqlite:////data/parking_availability.db
     ports:
       - "8301:8301"
+    volumes:
+      - parking_availability_data:/data
     healthcheck:
       <<: *healthcheck
       test:
@@ -131,8 +145,12 @@ services:
   parking-billing:
     <<: *app
     command: uvicorn services.parking_billing.app.main:app --host 0.0.0.0 --port 8302
+    environment:
+      PARKING_BILLING_DATABASE_URL: sqlite:////data/parking_billing.db
     ports:
       - "8302:8302"
+    volumes:
+      - parking_billing_data:/data
     healthcheck:
       <<: *healthcheck
       test:
@@ -140,3 +158,8 @@ services:
         - python
         - -c
         - "import urllib.request; urllib.request.urlopen('http://localhost:8302/health')"
+
+volumes:
+  attraction_reservation_data:
+  parking_availability_data:
+  parking_billing_data:

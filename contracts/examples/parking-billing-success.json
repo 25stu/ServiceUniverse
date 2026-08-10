@@ -1,0 +1,13 @@
+{
+  "session_id": "4ec3665c-34e4-471e-b3eb-188fb814c867",
+  "citizen_id": "CITIZEN-001",
+  "vehicle_plate": "ABC 123",
+  "parking_lot_id": "LOT-CENTRAL-001",
+  "started_at": "2026-08-09T08:00:00Z",
+  "ended_at": "2026-08-09T09:15:00Z",
+  "duration_minutes": 75,
+  "amount_minor": 800,
+  "currency": "AUD",
+  "status": "completed",
+  "payment_status": "unpaid"
+}

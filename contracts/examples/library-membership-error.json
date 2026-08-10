@@ -1,0 +1,24 @@
+{
+  "request": {
+    "citizen_id": "CIT-RESTRICTED",
+    "full_name": "Restricted Demo Account",
+    "date_of_birth": "1990-01-01",
+    "email": "restricted@example.invalid",
+    "phone": "+61 400 000 000",
+    "preferred_language": "en",
+    "card_type": "digital",
+    "home_branch": "Central Library",
+    "identity_verified": true,
+    "terms_accepted": true,
+    "payment_confirmed": true
+  },
+  "response": {
+    "error": {
+      "code": "ACCOUNT_RESTRICTED",
+      "message": "A restricted or suspended library account already exists for this citizen.",
+      "details": {
+        "account_status": "restricted"
+      }
+    }
+  }
+}
