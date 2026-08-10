@@ -1,0 +1,50 @@
+{
+  "request": {
+    "citizen_id": "CIT-20481",
+    "full_name": "Morgan Lee",
+    "date_of_birth": "1994-06-18",
+    "email": "morgan.lee@example.com",
+    "phone": "+61 412 345 678",
+    "preferred_language": "en",
+    "card_type": "digital",
+    "home_branch": "Central Library",
+    "identity_verified": true,
+    "terms_accepted": true,
+    "payment_confirmed": true
+  },
+  "response": {
+    "account_id": "LIB-38F2A0CB119D",
+    "citizen_id": "CIT-20481",
+    "full_name": "Morgan Lee",
+    "date_of_birth": "1994-06-18",
+    "email": "morgan.lee@example.com",
+    "phone": "+61 412 345 678",
+    "preferred_language": "en",
+    "home_branch": "Central Library",
+    "mailing_address": null,
+    "status": "active",
+    "created_at": "2026-08-10T02:30:00Z",
+    "activated_at": "2026-08-10T02:30:00Z",
+    "card": {
+      "card_number": "CARD-38F2A0CB119D",
+      "card_type": "digital",
+      "issued_at": "2026-08-10T02:30:00Z",
+      "delivery_status": "issued"
+    },
+    "payment": {
+      "amount_minor": 500,
+      "currency": "AUD",
+      "status": "paid",
+      "processed_at": "2026-08-10T02:30:00Z",
+      "payment_reference": "SIM-PAY-38F2A0CB119D"
+    },
+    "borrowing": {
+      "items_on_loan": 0,
+      "items_overdue": 0,
+      "outstanding_fees_minor": 0,
+      "currency": "AUD",
+      "borrowing_allowed": true
+    },
+    "confirmation_notification": "Membership confirmed. The simulated AUD 5.00 payment was accepted and your account 38F2A0CB119D is active."
+  }
+}

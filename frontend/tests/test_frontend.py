@@ -28,3 +28,16 @@ def test_unknown_provider_returns_404() -> None:
     response = client.get("/providers/not-a-provider")
 
     assert response.status_code == 404
+
+
+def test_library_page_contains_complete_member_workflow() -> None:
+    response = client.get("/services/library-account")
+
+    assert response.status_code == 200
+    assert 'data-membership-form' in response.text
+    assert 'data-account-search' in response.text
+    assert 'data-account-update' in response.text
+    assert "POST /api/v1/library-memberships" in response.text
+    assert 'name="payment_confirmed"' in response.text
+    assert "simulated AUD 5.00" in response.text
+    assert "/static/js/library-account.js" in response.text
