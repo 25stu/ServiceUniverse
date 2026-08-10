@@ -1,0 +1,26 @@
+<section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">ServiceUniverse</a>
+    <span aria-hidden="true">/</span>
+    <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a>
+    <span aria-hidden="true">/</span>
+    <a href="/services/gas-fault">Gas Fault</a>
+  </nav>
+  <div class="service-title-grid">
+    <div>
+      <p class="eyebrow">{{ provider.code }} / Gas response service</p>
+      <h1>{{ service.name }}</h1>
+    </div>
+    <div class="service-readiness">
+      <span class="status-dot" aria-hidden="true"></span>
+      <div>
+        <p data-service-status>Checking service</p>
+        <small>Available around the clock</small>
+      </div>
+    </div>
+  </div>
+  <p class="service-lede">
+    Report a suspected gas fault, review your cases, or manage the operational
+    response through the appropriate workspace.
+  </p>
+</section>

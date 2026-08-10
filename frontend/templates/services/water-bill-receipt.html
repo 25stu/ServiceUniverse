@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Payment receipt — ServiceUniverse{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/water-billing.css') }}">
+  <script src="{{ url_for('static', path='/js/water-bill-receipt.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="water-document" data-water-receipt-page data-bill-id="{{ bill_id }}">
+    <nav class="water-document-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <a href="/services/water-billing">Water billing</a>
+      <span aria-hidden="true">/</span>
+      <span>Payment receipt</span>
+    </nav>
+
+    <header class="water-document-header water-receipt-header">
+      <div>
+        <p class="eyebrow">Municipal Utilities Authority</p>
+        <h1>Payment receipt</h1>
+        <p class="water-document-subtitle">Your water bill payment has been processed.</p>
+      </div>
+      <div class="water-paid-mark" aria-label="Payment completed">Paid</div>
+    </header>
+
+    <p class="water-document-message" data-water-message role="status" aria-live="polite">Loading receipt…</p>
+    <div class="water-document-grid">
+      <section class="water-receipt-document" data-water-receipt hidden>
+        <div class="water-receipt-amount">
+          <p>Amount paid</p>
+          <strong data-water-payment-amount></strong>
+        </div>
+        <dl data-water-receipt-details></dl>
+        <a class="water-download-link" data-water-pdf-download download>
+          Download PDF receipt
+        </a>
+      </section>
+      <aside class="water-document-aside">
+        <p class="eyebrow">For your records</p>
+        <p>The PDF is a printable copy of this receipt. Keep it with your water account records.</p>
+        <a href="/services/water-billing">Back to all water bills</a>
+      </aside>
+    </div>
+  </section>
+{% endblock %}

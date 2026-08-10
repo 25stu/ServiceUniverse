@@ -1,0 +1,5 @@
+{
+  "code": "BILL_ALREADY_PAID",
+  "message": "This bill has already been paid and cannot be paid again.",
+  "details": null
+}

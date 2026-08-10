@@ -1,3 +1,51 @@
 {% extends "service.html" %}
 
-{# Owner B: override service_body or replace this file when the contract is ready. #}
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/gas-fault.css') }}">
+  <script src="{{ url_for('static', path='/js/gas-fault.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  {% include "services/gas-fault-hero.html" %}
+
+  <div class="gas-workspace gas-role-workspace" data-gas-page="roles">
+    <header class="gas-workspace-heading">
+      <p class="eyebrow">Choose a workspace</p>
+      <h2>How are you using this service?</h2>
+      <p>Select the role that matches the task you need to complete.</p>
+    </header>
+
+    <section class="gas-role-grid" aria-label="Available roles">
+      <article class="gas-role-card">
+        <span class="gas-role-number">01</span>
+        <p class="eyebrow">Citizen access</p>
+        <h3>Report and track a fault</h3>
+        <p>
+          Submit a new report, see all reports linked to your citizen reference,
+          and follow each repair timeline.
+        </p>
+        <form id="citizen-entry-form" class="gas-entry-form">
+          <label>
+            <span>Citizen reference</span>
+            <input name="citizen_id" placeholder="CITIZEN-001" required minlength="3" maxlength="64" pattern="[A-Za-z0-9_-]+">
+          </label>
+          <button type="submit">Enter citizen workspace <span aria-hidden="true">→</span></button>
+        </form>
+      </article>
+
+      <article class="gas-role-card gas-role-card-admin">
+        <span class="gas-role-number">02</span>
+        <p class="eyebrow">Operations access</p>
+        <h3>Manage repair cases</h3>
+        <p>
+          View every submitted fault report, open its case record, and move the
+          repair through approved operational stages.
+        </p>
+        <button class="gas-role-link" id="admin-entry-button" type="button">
+          Enter administrator workspace <span aria-hidden="true">→</span>
+        </button>
+        <small>Course prototype: this entry uses a clearly labelled demonstration role.</small>
+      </article>
+    </section>
+  </div>
+{% endblock %}

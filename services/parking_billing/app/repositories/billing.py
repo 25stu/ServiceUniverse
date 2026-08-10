@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from sqlalchemy import create_engine, select
+from sqlalchemy import case, create_engine, select
 from sqlalchemy.orm import sessionmaker
 
 from services.parking_billing.app.models import (
@@ -223,6 +223,21 @@ class BillingRepository:
                 database.scalars(
                     select(ProcessEvent)
                     .where(ProcessEvent.case_id == session_id)
-                    .order_by(ProcessEvent.timestamp, ProcessEvent.event_id)
+                    .order_by(
+                        ProcessEvent.timestamp,
+                        case(
+                            {
+                                "Register Parking Entry": 1,
+                                "Close Parking Session": 2,
+                                "Calculate Parking Fee": 3,
+                                "Initiate Payment": 4,
+                                "Confirm Payment": 5,
+                                "Reject Payment": 5,
+                            },
+                            value=ProcessEvent.activity,
+                            else_=99,
+                        ),
+                        ProcessEvent.event_id,
+                    )
                 )
             )

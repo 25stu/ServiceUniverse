@@ -1,0 +1,353 @@
+.library-workspace {
+  --accent: var(--red);
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(15rem, .68fr) minmax(0, 1.32fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+.library-guide {
+  align-self: start;
+  position: sticky;
+  top: 2rem;
+}
+
+.library-guide h2 {
+  margin: 0 0 2.5rem;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 4vw, 4.3rem);
+  font-weight: 400;
+  letter-spacing: -.045em;
+  line-height: .98;
+}
+
+.library-guide ol {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.library-guide li {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.library-guide li span,
+.action-number {
+  color: var(--accent);
+  font-family: var(--display);
+}
+
+.service-promises {
+  margin: 3rem 0 0;
+}
+
+.service-promises div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .65rem 0;
+}
+
+.service-promises dt {
+  color: var(--ink-soft);
+}
+
+.service-promises dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.library-actions {
+  min-width: 0;
+}
+
+.library-action + .library-action {
+  margin-top: clamp(5rem, 10vw, 9rem);
+}
+
+.action-heading {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.action-heading .action-number {
+  margin: .1rem 0 0;
+  font-size: 1.6rem;
+}
+
+.action-heading h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 4vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.library-form fieldset {
+  margin: 0 0 2.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.library-form legend {
+  width: 100%;
+  margin-bottom: 1.25rem;
+  padding: 0 0 .75rem;
+  border-bottom: 1px solid var(--ink);
+  font-weight: 700;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+}
+
+.field-grid label,
+.account-search label {
+  display: grid;
+  gap: .45rem;
+  min-width: 0;
+  color: var(--ink-soft);
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.field-grid label > span,
+.account-search label > span {
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.field-grid .full-field {
+  grid-column: 1 / -1;
+}
+
+.library-form input,
+.library-form select,
+.library-form textarea,
+.account-search input {
+  width: 100%;
+  min-height: 3.15rem;
+  padding: .7rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  font: inherit;
+}
+
+.library-form textarea {
+  resize: vertical;
+}
+
+.library-form input:focus,
+.library-form select:focus,
+.library-form textarea:focus,
+.account-search input:focus {
+  border-color: var(--ink);
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.application-confirmations {
+  display: grid;
+  gap: .85rem;
+  margin-bottom: 2rem;
+}
+
+.check-field {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: .75rem;
+  align-items: start;
+}
+
+.check-field input {
+  width: 1.15rem;
+  min-height: auto;
+  height: 1.15rem;
+  margin: .2rem 0 0;
+  accent-color: var(--ink);
+}
+
+.form-submit-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.form-submit-row p {
+  max-width: 31rem;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+
+.library-form button,
+.account-search button {
+  min-height: 3.2rem;
+  padding: .75rem 1.15rem;
+  border: 1px solid var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.library-form button:hover,
+.account-search button:hover {
+  color: var(--ink);
+  background: var(--yellow);
+}
+
+.library-form button:disabled,
+.account-search button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.form-message {
+  margin-top: 1.5rem;
+  padding: 1rem 0;
+  border-block: 1px solid var(--red);
+  color: var(--red);
+  font-weight: 700;
+}
+
+.form-message[data-state="success"] {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.membership-result,
+.account-view {
+  margin-top: 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--ink);
+  background: var(--paper-deep);
+}
+
+.membership-result h3,
+.account-view h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.account-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 0;
+}
+
+.account-facts div {
+  padding-top: .8rem;
+  border-top: 1px solid var(--line);
+}
+
+.account-facts dt {
+  color: var(--ink-soft);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.account-facts dd {
+  overflow-wrap: anywhere;
+  margin: .35rem 0 0;
+  font-weight: 700;
+}
+
+.account-search {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.account-view > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: start;
+}
+
+.account-view > header p:last-child {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+}
+
+.account-status {
+  padding: .45rem .7rem;
+  border: 1px solid currentColor;
+  color: var(--green);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.account-facts-wide {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.compact-form {
+  margin-top: 3rem;
+}
+
+.compact-form button {
+  color: var(--ink);
+  background: transparent;
+}
+
+@container (max-width: 700px) {
+  .field-grid,
+  .account-facts-wide {
+    grid-template-columns: 1fr;
+  }
+
+  .field-grid .full-field {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .library-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .library-guide {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .field-grid,
+  .form-submit-row,
+  .account-search,
+  .account-facts {
+    grid-template-columns: 1fr;
+  }
+
+.account-view > header {
+    flex-direction: column;
+  }
+}

@@ -1,3 +1,232 @@
-{% extends "service.html" %}
+{% extends "base.html" %}
 
-{# Owner D: override service_body or replace this file when the contract is ready. #}
+{% block title %}Library membership — ServiceUniverse{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/library-account.css') }}">
+  <script src="{{ url_for('static', path='/js/library-account.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="service-hero provider-{{ provider.accent }}" data-service-slug="{{ service.slug }}">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">ServiceUniverse</a>
+      <span aria-hidden="true">/</span>
+      <a href="/providers/{{ provider.slug }}">{{ provider.short_name }}</a>
+      <span aria-hidden="true">/</span>
+      <span>Library membership</span>
+    </nav>
+    <div class="service-title-grid">
+      <div>
+        <p class="eyebrow">CR / Membership desk</p>
+        <h1>Join your public library.</h1>
+      </div>
+      <div class="service-readiness">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div>
+          <p data-service-status>Checking service</p>
+          <small>Account activation within one day</small>
+        </div>
+      </div>
+    </div>
+    <p class="service-lede">
+      Apply for a library card, check your borrowing access, and keep your
+      contact details current from one account workspace.
+    </p>
+  </section>
+
+  <div class="library-workspace" data-library-workspace>
+    <aside class="library-guide" aria-label="Membership guide">
+      <p class="eyebrow">Before you begin</p>
+      <h2>One application.<br>Immediate access.</h2>
+      <ol>
+        <li><span>01</span>Confirm your identity details</li>
+        <li><span>02</span>Choose a digital or physical card</li>
+        <li><span>03</span>Receive your active account</li>
+      </ol>
+      <dl class="service-promises">
+        <div>
+          <dt>Application response</dt>
+          <dd>Within 10 minutes</dd>
+        </div>
+        <div>
+          <dt>Languages</dt>
+          <dd>English and Chinese</dd>
+        </div>
+        <div>
+          <dt>Activation</dt>
+          <dd>Within one day</dd>
+        </div>
+      </dl>
+    </aside>
+
+    <div class="library-actions">
+      <section class="library-action" aria-labelledby="apply-title">
+        <div class="action-heading">
+          <p class="action-number">01</p>
+          <div>
+            <p class="eyebrow">New membership</p>
+            <h2 id="apply-title">Create your account</h2>
+          </div>
+        </div>
+
+        <form class="library-form" data-membership-form novalidate>
+          <fieldset>
+            <legend>Identity details</legend>
+            <div class="field-grid">
+              <label>
+                <span>Citizen ID</span>
+                <input name="citizen_id" autocomplete="off" required minlength="3" placeholder="CIT-20481">
+              </label>
+              <label>
+                <span>Full name</span>
+                <input name="full_name" autocomplete="name" required placeholder="Morgan Lee">
+              </label>
+              <label>
+                <span>Date of birth</span>
+                <input name="date_of_birth" type="date" autocomplete="bday" required>
+              </label>
+              <label>
+                <span>Home branch</span>
+                <input name="home_branch" required value="Central Library">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Contact and card</legend>
+            <div class="field-grid">
+              <label>
+                <span>Email address</span>
+                <input name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+              </label>
+              <label>
+                <span>Phone number</span>
+                <input name="phone" type="tel" autocomplete="tel" required placeholder="+61 412 345 678">
+              </label>
+              <label>
+                <span>Confirmation language</span>
+                <select name="preferred_language">
+                  <option value="en">English</option>
+                  <option value="zh">Chinese</option>
+                </select>
+              </label>
+              <label>
+                <span>Card format</span>
+                <select name="card_type" data-card-type>
+                  <option value="digital">Digital card</option>
+                  <option value="physical">Physical card</option>
+                </select>
+              </label>
+              <label class="full-field" data-mailing-field hidden>
+                <span>Card mailing address</span>
+                <textarea name="mailing_address" rows="3" autocomplete="street-address"></textarea>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="application-confirmations">
+            <label class="check-field">
+              <input name="identity_verified" type="checkbox" required>
+              <span>My citizen identity information has been verified.</span>
+            </label>
+            <label class="check-field">
+              <input name="terms_accepted" type="checkbox" required>
+              <span>I accept the public library membership terms.</span>
+            </label>
+            <label class="check-field">
+              <input name="payment_confirmed" type="checkbox" required>
+              <span>I confirm the simulated AUD 5.00 membership fee payment. No real payment details are collected.</span>
+            </label>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="submit" data-submit-membership>Create membership <span aria-hidden="true">→</span></button>
+            <p>AUD 5.00 is charged virtually for this prototype. The confirmation includes a simulated payment reference.</p>
+          </div>
+        </form>
+
+        <div class="form-message" data-application-message role="status" aria-live="polite" hidden></div>
+        <section class="membership-result" data-membership-result aria-labelledby="membership-result-title" hidden>
+          <p class="eyebrow">Membership confirmed</p>
+          <h3 id="membership-result-title" data-confirmation-message></h3>
+          <dl class="account-facts">
+            <div><dt>Account</dt><dd data-created-account></dd></div>
+            <div><dt>Card</dt><dd data-created-card></dd></div>
+            <div><dt>Status</dt><dd data-created-status></dd></div>
+          </dl>
+        </section>
+      </section>
+
+      <section class="library-action" aria-labelledby="account-title">
+        <div class="action-heading">
+          <p class="action-number">02</p>
+          <div>
+            <p class="eyebrow">Existing members</p>
+            <h2 id="account-title">Review your account</h2>
+          </div>
+        </div>
+
+        <form class="account-search" data-account-search>
+          <label>
+            <span>Library account ID</span>
+            <input name="account_id" required placeholder="LIB-38F2A0CB119D">
+          </label>
+          <button type="submit">Find account <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="form-message" data-account-message role="status" aria-live="polite" hidden></div>
+
+        <div class="account-view" data-account-view hidden>
+          <header>
+            <div>
+              <p class="eyebrow">Account holder</p>
+              <h3 data-account-name></h3>
+              <p data-account-id></p>
+            </div>
+            <strong class="account-status" data-account-status></strong>
+          </header>
+          <dl class="account-facts account-facts-wide">
+            <div><dt>Card number</dt><dd data-account-card></dd></div>
+            <div><dt>Home branch</dt><dd data-account-branch></dd></div>
+            <div><dt>Items on loan</dt><dd data-account-loans></dd></div>
+            <div><dt>Borrowing access</dt><dd data-account-access></dd></div>
+          </dl>
+
+          <form class="library-form compact-form" data-account-update>
+            <fieldset>
+              <legend>Update account details</legend>
+              <div class="field-grid">
+                <label>
+                  <span>Email address</span>
+                  <input name="email" type="email" autocomplete="email" required>
+                </label>
+                <label>
+                  <span>Phone number</span>
+                  <input name="phone" type="tel" autocomplete="tel" required>
+                </label>
+                <label>
+                  <span>Confirmation language</span>
+                  <select name="preferred_language">
+                    <option value="en">English</option>
+                    <option value="zh">Chinese</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Home branch</span>
+                  <input name="home_branch" required>
+                </label>
+              </div>
+            </fieldset>
+            <button type="submit">Save account details</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <aside class="developer-note">
+    <p>Public API</p>
+    <code>POST /api/v1/library-memberships</code>
+    <a href="/providers/{{ provider.slug }}">Back to {{ provider.short_name }}</a>
+  </aside>
+{% endblock %}

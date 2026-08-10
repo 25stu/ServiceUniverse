@@ -1,0 +1,11 @@
+{
+  "error": {
+    "code": "INVALID_FAULT_STATUS_TRANSITION",
+    "message": "The fault report cannot move from reported to closed.",
+    "details": {
+      "current_status": "reported",
+      "requested_status": "closed",
+      "allowed_statuses": ["assigned", "cancelled"]
+    }
+  }
+}

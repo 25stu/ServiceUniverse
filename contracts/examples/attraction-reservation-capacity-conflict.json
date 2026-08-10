@@ -1,0 +1,9 @@
+{
+  "detail": {
+    "code": "CAPACITY_CONFLICT",
+    "message": "The requested visitor count exceeds remaining capacity.",
+    "details": {
+      "remaining_capacity": 2
+    }
+  }
+}

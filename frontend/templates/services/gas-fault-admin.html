@@ -1,0 +1,41 @@
+{% extends "service.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/gas-fault.css') }}">
+  <script src="{{ url_for('static', path='/js/gas-fault.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  {% include "services/gas-fault-hero.html" %}
+
+  <div class="gas-workspace" data-gas-page="admin">
+    <div class="gas-workspace-bar">
+      <div>
+        <p class="eyebrow">Administrator workspace</p>
+        <h2>Repair operations</h2>
+        <p>Demonstration role: <strong>Gas operator</strong>.</p>
+      </div>
+      <a href="/services/gas-fault" data-change-role>Change role</a>
+    </div>
+
+    <section class="gas-admin-layout">
+      <article class="gas-records-panel">
+        <header class="gas-records-heading">
+          <div><p class="eyebrow">All applications</p><h2>Fault reports</h2></div>
+          <button type="button" data-refresh-reports>Refresh</button>
+        </header>
+        <p class="gas-records-intro">Select a report number to inspect its history and update the repair.</p>
+        <div class="gas-message" id="records-message" role="status" aria-live="polite" hidden></div>
+        <div class="gas-record-list" id="admin-report-list"></div>
+      </article>
+
+      <aside class="gas-admin-guide">
+        <p class="eyebrow">Approved sequence</p>
+        <ol><li>Reported</li><li>Assigned</li><li>Inspection in progress</li><li>Repair in progress</li><li>Resolved</li><li>Closed</li></ol>
+        <p>The service rejects any update that skips a required stage.</p>
+      </aside>
+    </section>
+
+    {% include "services/gas-fault-report-detail.html" %}
+  </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<section class="gas-report" id="gas-report" aria-live="polite" hidden>
+  <div class="gas-detail-heading">
+    <div><p class="eyebrow">Selected case</p><h2 id="report-id"></h2></div>
+    <button type="button" data-close-report aria-label="Close report details">Close</button>
+  </div>
+  <div class="gas-report-summary">
+    <div><p class="eyebrow">Current repair status</p><h3 id="report-status"></h3><p id="report-updated"></p></div>
+    <dl>
+      <div><dt>Citizen</dt><dd id="report-citizen"></dd></div>
+      <div><dt>Severity</dt><dd id="report-severity"></dd></div>
+      <div><dt>Address</dt><dd id="report-address"></dd></div>
+      <div><dt>Description</dt><dd id="report-description"></dd></div>
+    </dl>
+  </div>
+  <div class="gas-history"><p class="eyebrow">Case timeline</p><ol id="report-history"></ol></div>
+  {% if workspace == "user" %}
+  <div class="gas-message" id="cancel-message" role="status" aria-live="polite" hidden></div>
+  <section class="gas-cancel-action" data-citizen-cancel hidden>
+    <div>
+      <p class="eyebrow">No longer need assistance?</p>
+      <h3>Cancel this application</h3>
+      <p>Cancellation is permanent and will be recorded in the case timeline.</p>
+    </div>
+    <button type="button" id="cancel-report-button">Cancel application</button>
+  </section>
+  {% endif %}
+  {% if workspace == "admin" %}
+  <section class="gas-operations" data-admin-only>
+    <div class="gas-operations-heading"><p class="eyebrow">Operational update</p><h3>Move the repair forward</h3></div>
+    <form class="gas-form" id="status-update-form">
+      <div class="gas-field-grid">
+        <label><span>Next status</span><select name="status" required><option value="">Choose next status</option><option value="assigned">Assigned</option><option value="inspection_in_progress">Inspection in progress</option><option value="repair_in_progress">Repair in progress</option><option value="resolved">Resolved</option><option value="closed">Closed</option><option value="cancelled">Cancelled</option></select></label>
+        <label><span>Responsible team</span><input name="resource" placeholder="Gas Repair Team 1" required minlength="2" maxlength="100"></label>
+      </div>
+      <label><span>Update note <small>(optional)</small></span><textarea name="note" rows="3" maxlength="500"></textarea></label>
+      <div class="gas-form-footer"><p>Every accepted update is added to the timeline.</p><button type="submit">Update status <span aria-hidden="true">→</span></button></div>
+    </form>
+    <div class="gas-message" id="status-message" role="status" aria-live="polite" hidden></div>
+  </section>
+  {% endif %}
+</section>
